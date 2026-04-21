@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BWM XMD Deployer</title>
+    <style>
+        body { background: #0b1120; color: white; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .card { width: 400px; background: #151c2c; padding: 25px; border-radius: 15px; border: 1px solid #1e293b; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .xd-badge { color: #10b981; font-weight: bold; background: #064e3b; padding: 5px 10px; border-radius: 5px; }
+        label { display: block; font-size: 12px; color: #94a3b8; margin: 15px 0 5px; text-transform: uppercase; }
+        input, textarea { 
+            width: 100%; background: #0f172a; border: 1px solid #334155; 
+            padding: 12px; color: white; border-radius: 8px; box-sizing: border-box;
+        }
+        .btn { 
+            width: 100%; padding: 15px; background: #b91c1c; color: white; 
+            border: none; border-radius: 8px; font-weight: bold; margin-top: 20px; cursor: pointer;
+        }
+        .btn:disabled { background: #450a0a; cursor: not-allowed; }
+        #status { margin-top: 15px; text-align: center; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <div><strong>BWM XMD</strong><br><small style="color:#64748b">by Abraham Ngoya</small></div>
+        <div class="xd-badge">50 XD</div>
+    </div>
+
+    <label>Device Mode</label>
+    <input type="text" id="mode" value="Android">
+
+    <label>Owner Number</label>
+    <input type="text" id="num" placeholder="2547...">
+
+    <label>Session ID</label>
+    <textarea id="sess" rows="4" placeholder="Paste session ID here..."></textarea>
+
+    <button class="btn" id="deployBtn" onclick="startDeploy()">DEPLOY NOW</button>
+    <div id="status"></div>
+</div>
+
+<script>
+    async function startDeploy() {
+        const btn = document.getElementById('deployBtn');
+        const status = document.getElementById('status');
+        
+        const payload = {
+            deviceMode: document.getElementById('mode').value,
+            ownerNumber: document.getElementById('num').value,
+            sessionId: document.getElementById('sess').value
+        };
+
+        btn.disabled = true;
+        btn.innerText = "Deploying... Please wait";
+        status.innerText = "Creating app on Heroku...";
+
+        try {
+            const res = await fetch('/api/deploy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const data = await res.json();
+            if (data.success) {
+                status.style.color = "#10b981";
+                status.innerHTML = `Success! App is building.<br><a href="${data.url}" target="_blank" style="color:white">Open App</a>`;
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (e) {
+            status.style.color = "#ef4444";
+            status.innerText = "Error: " + e.message;
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
+
