@@ -1,82 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>BWM XMD Deployer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BWM XMD Deploy</title>
     <style>
-        body { background: #0b1120; color: white; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-        .card { width: 400px; background: #151c2c; padding: 25px; border-radius: 15px; border: 1px solid #1e293b; }
-        .header { display: flex; justify-content: space-between; align-items: center; }
-        .xd-badge { color: #10b981; font-weight: bold; background: #064e3b; padding: 5px 10px; border-radius: 5px; }
-        label { display: block; font-size: 12px; color: #94a3b8; margin: 15px 0 5px; text-transform: uppercase; }
-        input, textarea { 
-            width: 100%; background: #0f172a; border: 1px solid #334155; 
-            padding: 12px; color: white; border-radius: 8px; box-sizing: border-box;
-        }
-        .btn { 
-            width: 100%; padding: 15px; background: #b91c1c; color: white; 
-            border: none; border-radius: 8px; font-weight: bold; margin-top: 20px; cursor: pointer;
-        }
-        .btn:disabled { background: #450a0a; cursor: not-allowed; }
-        #status { margin-top: 15px; text-align: center; font-size: 14px; }
+        body { background: #0b1120; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .card { width: 100%; max-width: 400px; background: #151c2c; padding: 20px; border-radius: 12px; border: 1px solid #1e293b; }
+        .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .xd { color: #10b981; font-weight: bold; }
+        .input-box { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        input, textarea { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; box-sizing: border-box; }
+        .deploy-btn { width: 100%; padding: 15px; background: #ef4444; border: none; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        .deploy-btn:disabled { background: #334155; cursor: wait; }
+        #status { margin-top: 15px; text-align: center; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="header">
-        <div><strong>BWM XMD</strong><br><small style="color:#64748b">by Abraham Ngoya</small></div>
-        <div class="xd-badge">50 XD</div>
+    <div class="head">
+        <div><strong>IBRAHIM</strong> ADAMS</div>
+        <div class="xd">50 XD</div>
     </div>
 
-    <label>Device Mode</label>
-    <input type="text" id="mode" value="Android">
+    <div class="input-box">
+        <label>Device Mode</label>
+        <input type="text" id="mode" value="Android">
+    </div>
 
-    <label>Owner Number</label>
-    <input type="text" id="num" placeholder="2547...">
+    <div class="input-box">
+        <label>Owner Number</label>
+        <input type="text" id="owner" placeholder="254712345678">
+    </div>
 
-    <label>Session ID</label>
-    <textarea id="sess" rows="4" placeholder="Paste session ID here..."></textarea>
+    <div class="input-box">
+        <label>Session ID</label>
+        <textarea id="session" rows="4" placeholder="Paste session id here"></textarea>
+    </div>
 
-    <button class="btn" id="deployBtn" onclick="startDeploy()">DEPLOY NOW</button>
+    <button class="deploy-btn" id="btn" onclick="run()">DEPLOY NOW</button>
     <div id="status"></div>
 </div>
 
 <script>
-    async function startDeploy() {
-        const btn = document.getElementById('deployBtn');
+    async function run() {
+        const btn = document.getElementById('btn');
         const status = document.getElementById('status');
         
-        const payload = {
+        const data = {
             deviceMode: document.getElementById('mode').value,
-            ownerNumber: document.getElementById('num').value,
-            sessionId: document.getElementById('sess').value
+            ownerNumber: document.getElementById('owner').value,
+            sessionId: document.getElementById('session').value
         };
 
         btn.disabled = true;
-        btn.innerText = "Deploying... Please wait";
-        status.innerText = "Creating app on Heroku...";
+        btn.innerText = "Deploying...";
+        status.innerText = "Connecting to Heroku...";
 
         try {
             const res = await fetch('/api/deploy', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(data)
             });
+            const result = await res.json();
             
-            const data = await res.json();
-            if (data.success) {
-                status.style.color = "#10b981";
-                status.innerHTML = `Success! App is building.<br><a href="${data.url}" target="_blank" style="color:white">Open App</a>`;
+            if(result.success) {
+                status.innerHTML = `<span style="color:#10b981">Deployed!</span><br><a href="${result.url}" target="_blank" style="color:white">View in Heroku Dashboard</a>`;
             } else {
-                throw new Error(data.error);
+                throw new Error(result.error);
             }
         } catch (e) {
             status.style.color = "#ef4444";
             status.innerText = "Error: " + e.message;
             btn.disabled = false;
+            btn.innerText = "DEPLOY NOW";
         }
     }
 </script>
+
 </body>
 </html>
-
