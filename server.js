@@ -1,39 +1,63 @@
 const express = require('express');
-const axios = require('axios');
-const path = require('path');
+const Heroku = require('heroku-client');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.static('public'));
+
+// --- CONFIGURATION ---
+const HEROKU_API_KEY = 'HRKU-AAWMlRPShni5R04CictZo9fmrXsANwQX6A3cbTATMkjQ_____wkzYDD52mdv'; // Get from Heroku settings
+const BOT_REPO_URL = 'https://github.com/User/Repo/tarball/main'; // Your bot's source code
+
+const heroku = new Heroku({ token: HEROKU_API_KEY });
+
+// Serve the HTML file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/api/deploy', async (req, res) => {
-    const { apiKey, repoUrl, envVars, appName } = req.body;
+    const { deviceMode, ownerNumber, sessionId } = req.body;
+
+    // Basic Validation
+    if (!ownerNumber || !sessionId) {
+        return res.status(400).json({ error: "Missing required fields." });
+    }
 
     try {
-        // Clean the repo URL to ensure it works as a tarball link
-        const cleanRepo = repoUrl.replace(/\/$/, "");
-        const tarballUrl = `${cleanRepo}/tarball/main`;
+        // 1. Create the Heroku App
+        const appName = "bwm-xmd-" + Math.floor(Math.random() * 100000);
+        const newApp = await heroku.post('/apps', {
+            body: { name: appName, region: 'us' }
+        });
 
-        const herokuResponse = await axios.post('https://api.heroku.com/app-setups', {
-            source_blob: { url: tarballUrl },
-            app: { name: appName || undefined }, // Optional custom name
-            overrides: { env: envVars }
-        }, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Accept': 'application/vnd.heroku+json; version=3',
-                'Content-Type': 'application/json'
+        // 2. Set Config Vars (Environment Variables)
+        await heroku.patch(`/apps/${appName}/config-vars`, {
+            body: {
+                DEVICE_MODE: deviceMode,
+                OWNER_NUMBER: ownerNumber,
+                SESSION_ID: sessionId,
+                // Add default bot vars here
+                TZ: 'Africa/Nairobi' 
             }
         });
 
-        res.status(200).json({ success: true, url: herokuResponse.data.dashboard_build_status_url });
-    } catch (error) {
-        const errorMsg = error.response ? error.response.data.message : error.message;
-        res.status(500).json({ success: false, message: errorMsg });
+        // 3. Trigger Deployment from GitHub
+        await heroku.post(`/apps/${appName}/builds`, {
+            body: {
+                source_blob: { url: BOT_REPO_URL }
+            }
+        });
+
+        res.json({ success: true, url: `https://${appName}.herokuapp.com` });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.body ? err.body.message : "Deployment failed" });
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
