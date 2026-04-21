@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Deploy Bot</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a2e; color: white; display: flex; justify-content: center; padding: 50px; }
+        .card { background: #16213e; padding: 30px; border-radius: 15px; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: #4eccaf; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #4eccaf; border: none; color: #1a1a2e; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+        #log { margin-top: 15px; font-size: 13px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Bot Deployer</h2>
+        <input type="password" id="key" placeholder="Heroku API Key">
+        <input type="text" id="repo" placeholder="GitHub Repo URL (Public)">
+        <input type="text" id="session" placeholder="WhatsApp Session ID">
+        <input type="text" id="owner" placeholder="Owner Number (e.g. 91...)">
+        <button onclick="deploy()">DEPLOY NOW</button>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        async function deploy() {
+            const log = document.getElementById('log');
+            log.innerHTML = "⏳ Deploying... please wait.";
+            
+            const data = {
+                apiKey: document.getElementById('key').value,
+                repoUrl: document.getElementById('repo').value,
+                envVars: {
+                    "SESSION_ID": document.getElementById('session').value,
+                    "OWNER_NUMBER": document.getElementById('owner').value
+                }
+            };
+
+            try {
+                const res = await fetch('/api/deploy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                
+                if(result.success) {
+                    log.innerHTML = "✅ Success! Check your Heroku Dashboard.";
+                    log.style.color = "#4eccaf";
+                } else {
+                    log.innerHTML = "❌ Error: " + result.message;
+                    log.style.color = "#ff4d4d";
+                }
+            } catch (e) {
+                log.innerHTML = "❌ Connection failed.";
+            }
+        }
+    </script>
+</body>
+</html>
