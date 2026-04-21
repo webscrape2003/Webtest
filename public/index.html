@@ -7,18 +7,30 @@
         body { font-family: sans-serif; background: #1a1a2e; color: white; display: flex; justify-content: center; padding: 50px; }
         .card { background: #16213e; padding: 30px; border-radius: 15px; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h2 { color: #4eccaf; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; box-sizing: border-box; }
+        .info-text { font-size: 12px; color: #888; margin-bottom: 10px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; box-sizing: border-box; background: #e8e8e8; }
+        input:focus { outline: 2px solid #4eccaf; background: #fff; }
         button { width: 100%; padding: 15px; background: #4eccaf; border: none; color: #1a1a2e; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; }
-        #log { margin-top: 15px; font-size: 13px; text-align: center; }
+        button:hover { background: #3db89d; }
+        #log { margin-top: 15px; font-size: 13px; text-align: center; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="card">
         <h2>Bot Deployer</h2>
-        <input type="password" id="key" placeholder="Heroku API Key">
-        <input type="text" id="repo" placeholder="GitHub Repo URL (Public)">
-        <input type="text" id="session" placeholder="WhatsApp Session ID">
-        <input type="text" id="owner" placeholder="Owner Number (e.g. 91...)">
+        <div class="info-text">Deploying as: <b>herkouuser@gmail.com</b></div>
+        
+        <input type="hidden" id="key" value="HRKU-AAWMlRPShni5R04CictZo9fmrXsANwQX6A3cbTATMkjQ_____wkzYDD52mdv">
+        
+        <label style="font-size: 12px;">GitHub Repo URL</label>
+        <input type="text" id="repo" placeholder="https://github.com/user/repo">
+        
+        <label style="font-size: 12px;">WhatsApp Session ID</label>
+        <input type="text" id="session" placeholder="PASTE_SESSION_HERE">
+        
+        <label style="font-size: 12px;">Owner Number</label>
+        <input type="text" id="owner" placeholder="94712345678">
+        
         <button onclick="deploy()">DEPLOY NOW</button>
         <div id="log"></div>
     </div>
@@ -26,14 +38,24 @@
     <script>
         async function deploy() {
             const log = document.getElementById('log');
-            log.innerHTML = "⏳ Deploying... please wait.";
+            const repo = document.getElementById('repo').value;
+            
+            if(!repo) {
+                log.innerHTML = "❌ Please enter a GitHub URL";
+                log.style.color = "#ff4d4d";
+                return;
+            }
+
+            log.innerHTML = "⏳ Deploying to Heroku... please wait.";
+            log.style.color = "white";
             
             const data = {
-                apiKey: document.getElementById('key').value,
-                repoUrl: document.getElementById('repo').value,
+                apiKey: document.getElementById('key').value, // Uses your hardcoded key
+                repoUrl: repo,
                 envVars: {
                     "SESSION_ID": document.getElementById('session').value,
-                    "OWNER_NUMBER": document.getElementById('owner').value
+                    "OWNER_NUMBER": document.getElementById('owner').value,
+                    "HEROKU_EMAIL": "herkouuser@gmail.com"
                 }
             };
 
@@ -46,14 +68,15 @@
                 const result = await res.json();
                 
                 if(result.success) {
-                    log.innerHTML = "✅ Success! Check your Heroku Dashboard.";
+                    log.innerHTML = "✅ Success! Bot is now building on your Heroku account.";
                     log.style.color = "#4eccaf";
                 } else {
                     log.innerHTML = "❌ Error: " + result.message;
                     log.style.color = "#ff4d4d";
                 }
             } catch (e) {
-                log.innerHTML = "❌ Connection failed.";
+                log.innerHTML = "❌ Connection failed. Is your server running?";
+                log.style.color = "#ff4d4d";
             }
         }
     </script>
