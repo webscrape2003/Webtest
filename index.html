@@ -1,287 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DCT NINJA X MD</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCT NINJA X - Secure Pairing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff3131;
+            --bg-dark: #0f0f0f;
+            --card-bg: rgba(25, 25, 25, 0.8);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 49, 49, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 49, 49, 0.05) 0px, transparent 50%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-body{
-  background: radial-gradient(circle at center,#000,#0a0000,#140000);
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  overflow:hidden;
-}
+        /* Professional Glass Card */
+        .box {
+            position: relative;
+            width: 400px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
 
-/* PARTICLES */
-.particles span{
-  position:absolute;
-  width:6px;
-  height:6px;
-  background:red;
-  border-radius:50%;
-  box-shadow:0 0 10px red;
-  animation:float 6s linear infinite;
-}
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-@keyframes float{
-  0%{transform:translateY(100vh);opacity:0}
-  20%{opacity:1}
-  100%{transform:translateY(-10vh);opacity:0}
-}
+        /* Subtle Avatar Branding */
+        .avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 20px rgba(255, 49, 49, 0.2);
+        }
 
-/* BOX */
-.box{
-  width:360px;
-  background:rgba(20,0,0,0.7);
-  border:1px solid rgba(255,0,0,0.4);
-  backdrop-filter:blur(12px);
-  border-radius:20px;
-  padding:80px 20px 30px;
-  text-align:center;
-  box-shadow:0 0 30px rgba(255,0,0,0.2);
-  animation:fade 1s ease;
-}
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-@keyframes fade{
-  from{opacity:0;transform:translateY(40px)}
-  to{opacity:1;transform:translateY(0)}
-}
+        h2 {
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
 
-/* AVATAR */
-.avatar{
-  position:absolute;
-  top:-60px;
-  left:50%;
-  transform:translateX(-50%);
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  overflow:hidden;
-  border:3px solid red;
-  box-shadow:0 0 25px red;
-}
+        p {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
 
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+        /* Modern Input Fields */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
 
-/* TEXT */
-h2{
-  color:red;
-  margin-bottom:5px;
-}
+        label {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-left: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-p{
-  color:#bbb;
-  font-size:13px;
-}
+        input {
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
 
-/* INPUT */
-input{
-  width:100%;
-  margin-top:15px;
-  padding:12px;
-  border:none;
-  outline:none;
-  border-radius:10px;
-  background:#111;
-  color:#fff;
-  border:1px solid #333;
-  transition:.3s;
-}
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 49, 49, 0.05);
+        }
 
-input:focus{
-  border-color:red;
-  box-shadow:0 0 10px red;
-}
+        /* Refined Buttons */
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-/* BUTTON */
-button{
-  width:100%;
-  margin-top:12px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:red;
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.3s;
-}
+        #submit {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3);
+        }
 
-button:hover{
-  background:#000;
-  color:red;
-  border:1px solid red;
-  transform:scale(1.05);
-}
+        #submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 49, 49, 0.4);
+            filter: brightness(1.1);
+        }
 
-/* ACTIONS */
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
-}
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
 
-.actions button{
-  flex:1;
-}
+        .actions button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-dim);
+        }
 
-/* INFO */
-#pair{
-  margin-top:12px;
-  font-weight:bold;
-  min-height:20px;
-}
-</style>
+        .actions button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-color: #fff;
+        }
+
+        /* Output Code Section */
+        #pair {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        /* Status Indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #4CAF50;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- 🔊 BACKGROUND MUSIC -->
-<audio id="bgMusic" autoplay loop>
-  <source src="https://raw.githubusercontent.com/dct-dula/database/72aa5d4b1f23483de55304b7fc56a33f0ffea903/ninja-samurai-fighter-asian-epic-rock-royalty-free-music-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+    <source src="https://raw.githubusercontent.com/dct-dula/database/72aa5d4b1f23483de55304b7fc56a33f0ffea903/ninja-samurai-fighter-asian-epic-rock-royalty-free-music-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
 </audio>
 
-<div class="particles" id="particles"></div>
-
 <div class="box">
-  <div class="avatar">
-    <img src="https://raw.githubusercontent.com/dct-dula/database/refs/heads/main/WhatsApp%20Image%202026-04-18%20at%2022.32.51.jpeg">
-  </div>
+    <div class="avatar">
+        <img src="https://raw.githubusercontent.com/dct-dula/database/refs/heads/main/WhatsApp%20Image%202026-04-18%20at%2022.32.51.jpeg" alt="Logo">
+    </div>
 
-  <h2>DCT NINJA X MD</h2>
-  <p>Enter WhatsApp number with country code</p>
+    <h2>NINJA X MD</h2>
+    <p>Pair your device via phone number</p>
 
-  <input id="number" type="tel" placeholder="947XXXXXXXX">
+    <div class="input-group">
+        <label>WhatsApp Number</label>
+        <input id="number" type="tel" placeholder="e.g. 947XXXXXXXX" autocomplete="off">
+    </div>
 
-  <button id="submit">GET CODE</button>
+    <button id="submit">GENERATE PAIRING CODE</button>
 
-  <div id="pair"></div>
+    <div id="pair">
+        <span style="color: var(--text-dim); font-size: 13px; letter-spacing: 0;">Waiting for input...</span>
+    </div>
 
-  <div class="actions">
-    <button id="joinBtn">JOIN</button>
-    <button id="clearBtn">CLEAR</button>
-  </div>
+    <div class="actions">
+        <button id="joinBtn">COMMUNITY</button>
+        <button id="clearBtn">RESET</button>
+    </div>
+    
+    <div style="margin-top: 20px; font-size: 10px; color: #444;">
+        SECURE END-TO-END ENCRYPTION ACTIVE
+    </div>
 </div>
 
-<!-- SOUNDS -->
 <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
 <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
 
 <script>
-
-/* 🔊 AUTO PLAY FIX + VOLUME */
 const bgMusic = document.getElementById("bgMusic");
-bgMusic.volume = 0.3;
+bgMusic.volume = 0.2;
 
-// Some browsers block autoplay → start on first click
 document.body.addEventListener("click", () => {
-  bgMusic.play().catch(()=>{});
+    bgMusic.play().catch(()=>{});
 }, { once: true });
 
-/* PARTICLES */
-const container=document.getElementById("particles");
-for(let i=0;i<50;i++){
-  let s=document.createElement("span");
-  s.style.left=Math.random()*100+"vw";
-  s.style.animationDuration=(3+Math.random()*5)+"s";
-  container.appendChild(s);
-}
-
-/* SOUND */
 const clickSound=document.getElementById("clickSound");
 const successSound=document.getElementById("successSound");
 
 function playClick(){
-  clickSound.currentTime=0;
-  clickSound.play();
+    clickSound.currentTime=0;
+    clickSound.play();
 }
 
 function playSuccess(){
-  successSound.currentTime=0;
-  successSound.play();
+    successSound.currentTime=0;
+    successSound.play();
 }
 
-/* TYPE EFFECT */
-function typeText(el,text,speed=40){
-  el.innerHTML="";
-  let i=0;
-  function typing(){
-    if(i<text.length){
-      el.innerHTML+=text.charAt(i);
-      i++;
-      setTimeout(typing,speed);
+function typeText(el,text,speed=30){
+    el.innerHTML="";
+    let i=0;
+    function typing(){
+        if(i<text.length){
+            el.innerHTML+=text.charAt(i);
+            i++;
+            setTimeout(typing,speed);
+        }
     }
-  }
-  typing();
+    typing();
 }
 
-/* LOGIC */
 const pair=document.getElementById("pair");
 const num=document.getElementById("number");
 
 document.getElementById("submit").onclick=async()=>{
-  playClick();
+    playClick();
 
-  if(!num.value || num.value.length<10){
-    typeText(pair,"Invalid number",30);
-    return;
-  }
+    if(!num.value || num.value.length < 10){
+        typeText(pair,"⚠️ Invalid phone format", 30);
+        return;
+    }
 
-  typeText(pair,"Initializing ninja system...",25);
+    pair.innerHTML = '<span style="font-size: 13px; color: #aaa;">Connecting to server...</span>';
 
-  try{
-    let res=await fetch(`/code?number=${num.value}`);
-    let data=await res.json();
+    try {
+        let res = await fetch(`/code?number=${num.value}`);
+        let data = await res.json();
 
-    setTimeout(()=>{
-      typeText(pair,"Generating secure code...",25);
-    },800);
+        setTimeout(() => {
+            if(data.code) {
+                pair.innerHTML = `<span style="color:var(--primary); font-weight:bold;">${data.code}</span>`;
+                playSuccess();
+            } else {
+                typeText(pair, "Error: Service Unavailable", 30);
+            }
+        }, 1200);
 
-    setTimeout(()=>{
-      pair.innerHTML=`<span style="color:red">CODE: ${data.code || "ERROR"}</span>`;
-      playSuccess();
-    },1600);
-
-  }catch{
-    typeText(pair,"Server Error",30);
-  }
+    } catch {
+        typeText(pair, "Connection Failed", 30);
+    }
 };
 
 document.getElementById("clearBtn").onclick=()=>{
-  playClick();
-  num.value="";
-  pair.innerHTML="";
+    playClick();
+    num.value="";
+    pair.innerHTML='<span style="color: var(--text-dim); font-size: 13px; letter-spacing: 0;">Waiting for input...</span>';
 };
 
 document.getElementById("joinBtn").onclick=()=>{
-  playClick();
-  window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw","_blank");
+    playClick();
+    window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw","_blank");
 };
 
-/* ENTER KEY */
 num.addEventListener("keydown",(e)=>{
-  if(e.key==="Enter"){
-    document.getElementById("submit").click();
-  }
+    if(e.key==="Enter"){
+        document.getElementById("submit").click();
+    }
 });
-
 </script>
 
 </body>
