@@ -29,11 +29,10 @@
 
 
 
-/* --- SIDEBAR MENU --- */
 .sidebar {
     position: fixed;
     top: 0;
-    left: -280px; /* Hidden by default */
+    left: -280px; 
     width: 280px;
     height: 100%;
     background: rgba(10, 0, 0, 0.95);
@@ -42,11 +41,13 @@
     z-index: 2000;
     transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding: 20px;
-    display: flex;
-    flex-direction: column;
 }
 
-.sidebar.active { left: 0; box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8); }
+.sidebar.active {
+    left: 0;
+}
+
+
 
 .sidebar-header {
     display: flex;
@@ -834,8 +835,6 @@
 </button>
 
 <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-
 
 
     
