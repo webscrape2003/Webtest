@@ -29,6 +29,92 @@
 
 
 
+/* --- SIDEBAR MENU --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px; /* Hidden by default */
+    width: 280px;
+    height: 100%;
+    background: rgba(10, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    border-right: 1px solid rgba(255, 0, 0, 0.3);
+    z-index: 2000;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.active { left: 0; box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8); }
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #ff0000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.side-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #ccc;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.side-btn:hover {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: #ff0000;
+    color: #fff;
+}
+
+.side-btn i { color: #ff0000; font-size: 16px; }
+
+/* MENU TOGGLE BUTTON */
+.menu-toggle {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    z-index: 101; /* Above header */
+    background: transparent;
+    border: none;
+    color: #ff0000;
+    font-size: 22px;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1999;
+    transition: 0.3s;
+}
+
+.sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+
+        
+
 
 /* --- LIVE NEWS TICKER --- */
 .news-ticker-container {
@@ -727,7 +813,35 @@
 <body>
 
 
+<div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+        <i class="fas fa-user-ninja"></i>
+        <span>NINJA X MENU</span>
+    </div>
+    
+    <div class="sidebar-links">
+        <button class="side-btn user-info-trigger" onclick="toggleUserInfo()">
+            <i class="fas fa-id-card"></i> USER INFO
+        </button>
+        <a href="https://github.com/dct-dula" class="side-btn"><i class="fab fa-github"></i> REPOSITORY</a>
+        <a href="#" class="side-btn"><i class="fas fa-terminal"></i> COMMANDS</a>
+        <a href="#" class="side-btn"><i class="fas fa-life-ring"></i> SUPPORT</a>
+    </div>
+</div>
 
+<button id="menuBtn" class="menu-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+
+
+
+    
+
+
+    
 <div class="wind-container" id="windContainer"></div>    
 
     <header>
@@ -1267,6 +1381,22 @@
 
     // Faster interval for a more "active" wind feel
     setInterval(createWind, 200);
+
+
+
+// --- SIDEBAR CONTROL ---
+function toggleSidebar() {
+    playClick();
+    document.getElementById("sidebar").classList.toggle("active");
+    document.getElementById("sidebarOverlay").classList.toggle("active");
+}
+
+function toggleUserInfo() {
+    playClick();
+    // Logic to show User Info (could be a modal or an alert)
+    alert("USER INFO: \nStatus: Premium Developer \nProject: Vajira MD \nRole: System Admin");
+}
+
         
 </script>
 
