@@ -1,84 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BWM XMD Deploy</title>
-    <style>
-        body { background: #0b1120; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .card { width: 100%; max-width: 400px; background: #151c2c; padding: 20px; border-radius: 12px; border: 1px solid #1e293b; }
-        .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .xd { color: #10b981; font-weight: bold; }
-        .input-box { margin-bottom: 15px; }
-        label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        input, textarea { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; box-sizing: border-box; }
-        .deploy-btn { width: 100%; padding: 15px; background: #ef4444; border: none; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        .deploy-btn:disabled { background: #334155; cursor: wait; }
-        #status { margin-top: 15px; text-align: center; font-size: 13px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCT NINJA X MD</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background: radial-gradient(circle at center,#000,#0a0000,#140000);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* PARTICLES */
+.particles span{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:red;
+  border-radius:50%;
+  box-shadow:0 0 10px red;
+  animation:float 6s linear infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(100vh);opacity:0}
+  20%{opacity:1}
+  100%{transform:translateY(-10vh);opacity:0}
+}
+
+/* BOX */
+.box{
+  width:360px;
+  background:rgba(20,0,0,0.7);
+  border:1px solid rgba(255,0,0,0.4);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:80px 20px 30px;
+  text-align:center;
+  box-shadow:0 0 30px rgba(255,0,0,0.2);
+  animation:fade 1s ease;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* AVATAR */
+.avatar{
+  position:absolute;
+  top:-60px;
+  left:50%;
+  transform:translateX(-50%);
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid red;
+  box-shadow:0 0 25px red;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* TEXT */
+h2{
+  color:red;
+  margin-bottom:5px;
+}
+
+p{
+  color:#bbb;
+  font-size:13px;
+}
+
+/* INPUT */
+input{
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  border:none;
+  outline:none;
+  border-radius:10px;
+  background:#111;
+  color:#fff;
+  border:1px solid #333;
+  transition:.3s;
+}
+
+input:focus{
+  border-color:red;
+  box-shadow:0 0 10px red;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:red;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+
+button:hover{
+  background:#000;
+  color:red;
+  border:1px solid red;
+  transform:scale(1.05);
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.actions button{
+  flex:1;
+}
+
+/* INFO */
+#pair{
+  margin-top:12px;
+  font-weight:bold;
+  min-height:20px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="card">
-    <div class="head">
-        <div><strong>IBRAHIM</strong> ADAMS</div>
-        <div class="xd">50 XD</div>
-    </div>
+<!-- 🔊 BACKGROUND MUSIC -->
+<audio id="bgMusic" autoplay loop>
+  <source src="https://raw.githubusercontent.com/dct-dula/database/72aa5d4b1f23483de55304b7fc56a33f0ffea903/ninja-samurai-fighter-asian-epic-rock-royalty-free-music-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
+</audio>
 
-    <div class="input-box">
-        <label>Device Mode</label>
-        <input type="text" id="mode" value="Android">
-    </div>
+<div class="particles" id="particles"></div>
 
-    <div class="input-box">
-        <label>Owner Number</label>
-        <input type="text" id="owner" placeholder="254712345678">
-    </div>
+<div class="box">
+  <div class="avatar">
+    <img src="https://raw.githubusercontent.com/dct-dula/database/refs/heads/main/WhatsApp%20Image%202026-04-18%20at%2022.32.51.jpeg">
+  </div>
 
-    <div class="input-box">
-        <label>Session ID</label>
-        <textarea id="session" rows="4" placeholder="Paste session id here"></textarea>
-    </div>
+  <h2>DCT NINJA X MD</h2>
+  <p>Enter WhatsApp number with country code</p>
 
-    <button class="deploy-btn" id="btn" onclick="run()">DEPLOY NOW</button>
-    <div id="status"></div>
+  <input id="number" type="tel" placeholder="947XXXXXXXX">
+
+  <button id="submit">GET CODE</button>
+
+  <div id="pair"></div>
+
+  <div class="actions">
+    <button id="joinBtn">JOIN</button>
+    <button id="clearBtn">CLEAR</button>
+  </div>
 </div>
 
+<!-- SOUNDS -->
+<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+<audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
+
 <script>
-    async function run() {
-        const btn = document.getElementById('btn');
-        const status = document.getElementById('status');
-        
-        const data = {
-            deviceMode: document.getElementById('mode').value,
-            ownerNumber: document.getElementById('owner').value,
-            sessionId: document.getElementById('session').value
-        };
 
-        btn.disabled = true;
-        btn.innerText = "Deploying...";
-        status.innerText = "Connecting to Heroku...";
+/* 🔊 AUTO PLAY FIX + VOLUME */
+const bgMusic = document.getElementById("bgMusic");
+bgMusic.volume = 0.3;
 
-        try {
-            const res = await fetch('/api/deploy', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            const result = await res.json();
-            
-            if(result.success) {
-                status.innerHTML = `<span style="color:#10b981">Deployed!</span><br><a href="${result.url}" target="_blank" style="color:white">View in Heroku Dashboard</a>`;
-            } else {
-                throw new Error(result.error);
-            }
-        } catch (e) {
-            status.style.color = "#ef4444";
-            status.innerText = "Error: " + e.message;
-            btn.disabled = false;
-            btn.innerText = "DEPLOY NOW";
-        }
+// Some browsers block autoplay → start on first click
+document.body.addEventListener("click", () => {
+  bgMusic.play().catch(()=>{});
+}, { once: true });
+
+/* PARTICLES */
+const container=document.getElementById("particles");
+for(let i=0;i<50;i++){
+  let s=document.createElement("span");
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(3+Math.random()*5)+"s";
+  container.appendChild(s);
+}
+
+/* SOUND */
+const clickSound=document.getElementById("clickSound");
+const successSound=document.getElementById("successSound");
+
+function playClick(){
+  clickSound.currentTime=0;
+  clickSound.play();
+}
+
+function playSuccess(){
+  successSound.currentTime=0;
+  successSound.play();
+}
+
+/* TYPE EFFECT */
+function typeText(el,text,speed=40){
+  el.innerHTML="";
+  let i=0;
+  function typing(){
+    if(i<text.length){
+      el.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(typing,speed);
     }
+  }
+  typing();
+}
+
+/* LOGIC */
+const pair=document.getElementById("pair");
+const num=document.getElementById("number");
+
+document.getElementById("submit").onclick=async()=>{
+  playClick();
+
+  if(!num.value || num.value.length<10){
+    typeText(pair,"Invalid number",30);
+    return;
+  }
+
+  typeText(pair,"Initializing ninja system...",25);
+
+  try{
+    let res=await fetch(`/code?number=${num.value}`);
+    let data=await res.json();
+
+    setTimeout(()=>{
+      typeText(pair,"Generating secure code...",25);
+    },800);
+
+    setTimeout(()=>{
+      pair.innerHTML=`<span style="color:red">CODE: ${data.code || "ERROR"}</span>`;
+      playSuccess();
+    },1600);
+
+  }catch{
+    typeText(pair,"Server Error",30);
+  }
+};
+
+document.getElementById("clearBtn").onclick=()=>{
+  playClick();
+  num.value="";
+  pair.innerHTML="";
+};
+
+document.getElementById("joinBtn").onclick=()=>{
+  playClick();
+  window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw","_blank");
+};
+
+/* ENTER KEY */
+num.addEventListener("keydown",(e)=>{
+  if(e.key==="Enter"){
+    document.getElementById("submit").click();
+  }
+});
+
 </script>
 
 </body>
