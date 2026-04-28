@@ -90,31 +90,39 @@
 /* MENU TOGGLE BUTTON */
 .menu-toggle {
     position: fixed;
-    top: 15px;
-    left: 20px;
-    z-index: 101; /* Above header */
-    background: transparent;
-    border: none;
+    top: 20px;           /* Distance from top */
+    left: 50%;           /* Move to horizontal center */
+    transform: translateX(-50%); /* Offset by half its width to center perfectly */
+    z-index: 3000;       /* Keep it above all other elements */
+    background: rgba(255, 0, 0, 0.1); /* Optional: slight background glow */
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 50px;
     color: #ff0000;
-    font-size: 22px;
+    font-size: 20px;
     cursor: pointer;
-    text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 1999;
-    transition: 0.3s;
+.menu-toggle:hover {
+    background: #ff0000;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
 }
 
-.sidebar-overlay.active { opacity: 1; visibility: visible; }
+/* Add a label next to the bars icon for a better look */
+.menu-toggle::after {
+    content: "MENU";
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
 
 
-        
 
 
 /* --- LIVE NEWS TICKER --- */
