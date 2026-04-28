@@ -28,36 +28,35 @@
 
 
 
-/* --- WIND FLOW ANIMATION --- */
+/* --- FIXED FULL-SCREEN WIND FLOW --- */
 .wind-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0; /* Pins to top, bottom, left, and right */
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
-    z-index: 0; /* Behind everything */
+    z-index: -1; /* Ensures it stays behind your pairing box */
     overflow: hidden;
 }
 
 .wind-line {
     position: absolute;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.4), transparent);
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.2);
+    height: 1.5px; /* Slightly thicker for better visibility */
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.5), transparent);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
     border-radius: 100px;
     animation: windFlow linear infinite;
 }
 
 @keyframes windFlow {
     0% {
-        transform: translateX(-100%) translateY(0);
+        transform: translateX(-150%) translateY(0);
         opacity: 0;
     }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
     100% {
-        transform: translateX(200%) translateY(20px);
+        transform: translateX(150vw) translateY(30px); /* Move past the right edge */
         opacity: 0;
     }
 }
@@ -1084,35 +1083,35 @@
     };
 
 
-// --- WIND GENERATOR ---
+// --- IMPROVED WIND GENERATOR ---
     const windBox = document.getElementById("windContainer");
     
     function createWind() {
+        if (!windBox) return; // Safety check
+        
         const wind = document.createElement("div");
         wind.classList.add("wind-line");
         
         // Randomize size and position
-        const width = Math.random() * 150 + 50; // Length of wind streak
-        const top = Math.random() * 100; // Vertical position
-        const duration = Math.random() * 3 + 2; // Speed (2s to 5s)
-        const delay = Math.random() * 5;
+        const width = Math.random() * 200 + 100; 
+        const topPos = Math.random() * 100; // Spreads lines from 0% to 100% height
+        const duration = Math.random() * 2 + 2; // Speed
         
         wind.style.width = width + "px";
-        wind.style.top = top + "%";
-        wind.style.left = "-150px";
+        wind.style.top = topPos + "vh"; // Uses vh to ensure full height coverage
+        wind.style.left = "-250px"; 
         wind.style.animationDuration = duration + "s";
-        wind.style.animationDelay = delay + "s";
         
         windBox.appendChild(wind);
         
-        // Remove after animation to save memory
+        // Cleanup
         setTimeout(() => {
             wind.remove();
-        }, (duration + delay) * 1000);
+        }, duration * 1000);
     }
 
-    // Generate wind lines every 300ms
-    setInterval(createWind, 300);
+    // Faster interval for a more "active" wind feel
+    setInterval(createWind, 200);
         
 </script>
 
