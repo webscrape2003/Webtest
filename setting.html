@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Manager Pro</title>
+    <style>
+        :root {
+            --primary: #25d366; /* WhatsApp Green */
+            --accent: #34b7f1;
+            --bg-dark: #111b21;
+            --card-bg: #202c33;
+            --text-main: #e9edef;
+            --text-dim: #8696a0;
+            --input-bg: #2a3942;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        #translateLang {
+            color: #000000;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        #translateLang option {
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        .card { 
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+        h2 { font-size: 24px; margin-bottom: 8px; color: var(--primary); }
+        h3 { font-size: 16px; color: var(--accent); margin: 20px 0 10px 0; text-align: left; border-bottom: 1px solid #3b4a54; padding-bottom: 5px;}
+        p { font-size: 14px; color: var(--text-dim); margin-bottom: 25px; }
+
+        .phone-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+
+        input[type="text"], select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+        }
+
+        #otp-input {
+            text-align: center;
+            letter-spacing: 4px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .setting-box {
+            background: var(--input-bg);
+            border-radius: 12px;
+            padding: 10px 15px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .label-text { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #3b4a54; transition: .3s; border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 14px; width: 14px;
+            left: 3px; bottom: 3px; background-color: #aebac1; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(20px); background-color: white; }
+
+        button {
+            width: 100%; padding: 14px; background-color: var(--primary);
+            border: none; color: #111b21; font-weight: 700; font-size: 16px;
+            border-radius: 12px; cursor: pointer; margin-top: 15px; transition: 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        .btn-lock { background: transparent; color: #ea5656; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="unlock-card">
+        <h2>Bot Settings</h2>
+        <p>Enter your linked number to manage settings.</p>
+        
+        <div class="phone-input-wrapper">
+            <span style="color:var(--primary); font-weight:bold; margin-right:10px;">+</span>
+            <input type="text" id="token-input" placeholder="947XXXXXXXXX">
+        </div>
+
+        <div id="otp-area" class="hidden">
+            <p style="margin-bottom: 10px; color: var(--accent);">Check your WhatsApp for the code</p>
+            <div class="phone-input-wrapper">
+                <input type="text" id="otp-input" placeholder="000000" maxlength="6">
+            </div>
+        </div>
+
+        <button id="main-action-btn" onclick="requestOtp()">Send Verification Code</button>
+    </div>
+
+    <div class="card hidden" id="settings-card">
+        <h2>Bot Settings</h2>
+        <p id="display-number" style="color: var(--primary);"></p>
+
+        <div style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
+            <h3>General Mode</h3>
+            <div class="setting-box">
+                <span class="label-text">Work Type</span>
+                <select id="WORK_TYPE">
+                    <option value="public">Public Mode</option>
+                    <option value="private">Private Mode</option>
+                </select>
+            </div>
+            <div class="setting-box">
+                <span class="label-text">Movie Mode</span>
+                <select id="MOVIE_MODE">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+
+            <h3>Security & Filters</h3>
+            <div class="toggle-row"><span>Anti-Delete</span><label class="switch"><input type="checkbox" id="ANTI_DELETE"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Bad</span><label class="switch"><input type="checkbox" id="ANTI_BAD"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Bad No Block</span><label class="switch"><input type="checkbox" id="BAD_NO_BLOCK"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Link</span><label class="switch"><input type="checkbox" id="ANTI_LINK"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Bot</span><label class="switch"><input type="checkbox" id="ANTI_BOT"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Call</span><label class="switch"><input type="checkbox" id="ANTI_CALL"><span class="slider"></span></label></div>
+
+            <h3>News & Social</h3>
+            <div class="toggle-row"><span>Auto News</span><label class="switch"><input type="checkbox" id="AUTO_NEWS"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto TikTok DL</span><label class="switch"><input type="checkbox" id="AUTO_TIKTOK"><span class="slider"></span></label></div>
+
+            <h3>Automation</h3>
+            <div class="toggle-row"><span>Auto View Status</span><label class="switch"><input type="checkbox" id="AUTO_VIEW_STATUS"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Like Status</span><label class="switch"><input type="checkbox" id="AUTO_LIKE_STATUS"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto AI Chat</span><label class="switch"><input type="checkbox" id="AI_CHAT"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Voice</span><label class="switch"><input type="checkbox" id="AUTO_VOICE"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Sticker</span><label class="switch"><input type="checkbox" id="AUTO_STICKER"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Reply</span><label class="switch"><input type="checkbox" id="AUTO_REPLY"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Read Command</span><label class="switch"><input type="checkbox" id="READ_COMMAND"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Typing</span><label class="switch"><input type="checkbox" id="AUTO_TYPING"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Recording</span><label class="switch"><input type="checkbox" id="AUTO_RECORDING"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Always Online</span><label class="switch"><input type="checkbox" id="PRESENCE"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Welcome/Goodbye</span><label class="switch"><input type="checkbox" id="WELCOME_GOODBYE"><span class="slider"></span></label></div>
+
+            <div class="setting-box">
+                <span class="label-text">Auto Reply Mode</span>
+                <select id="AUTO_REPLY_MODE">
+                    <option value="default">Default</option>
+                    <option value="group">Group Only</option>
+                    <option value="pm">PM Only</option>
+                </select>
+            </div>
+        </div>
+
+        <button onclick="save()">Apply All Changes</button>
+        <button class="btn-lock" onclick="location.reload()">Log Out</button>
+    </div>
+
+    <script>
+        let sessionNumber = "";
+
+        async function requestOtp() {
+            sessionNumber = document.getElementById('token-input').value;
+            if (!sessionNumber) return alert("Please enter your registered number.");
+
+            try {
+                const response = await fetch('/api/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: sessionNumber })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('otp-area').classList.remove('hidden');
+                    const btn = document.getElementById('main-action-btn');
+                    btn.innerText = "Verify & Access Dashboard";
+                    btn.onclick = unlock; 
+                    alert("✅ Verification code sent to your WhatsApp!");
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert("Connection Error.");
+            }
+        }
+
+        async function unlock() {
+            const otpCode = document.getElementById('otp-input').value;
+            if (!otpCode) return alert("Please enter the verification code.");
+
+            try {
+                const response = await fetch('/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: sessionNumber, otp: otpCode })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('unlock-card').classList.add('hidden');
+                    document.getElementById('settings-card').classList.remove('hidden');
+                    document.getElementById('display-number').innerText = "+" + sessionNumber;
+
+                    const s = data.settings;
+                    // Mapping backend values to UI
+                    document.getElementById('WORK_TYPE').value = s.WORK_TYPE || "public";
+                    document.getElementById('MOVIE_MODE').value = s.MOVIE_MODE || "public";
+                    document.getElementById('AUTO_REPLY_MODE').value = s.AUTO_REPLY_MODE || "default";
+                    
+                    document.getElementById('AUTO_VIEW_STATUS').checked = s.AUTO_VIEW_STATUS === "true";
+                    document.getElementById('AUTO_LIKE_STATUS').checked = s.AUTO_LIKE_STATUS === "true";
+                    document.getElementById('AUTO_REPLY').checked = s.AUTO_REPLY === "true";
+                    document.getElementById('AUTO_STICKER').checked = s.AUTO_STICKER === "true";
+                    document.getElementById('ANTI_BAD').checked = s.ANTI_BAD === "true";
+                    document.getElementById('ANTI_LINK').checked = s.ANTI_LINK === "true";
+                    document.getElementById('ANTI_BOT').checked = s.ANTI_BOT === "true";
+                    document.getElementById('READ_COMMAND').checked = s.READ_COMMAND === "true";
+                    document.getElementById('AUTO_RECORDING').checked = s.AUTO_RECORDING === "true";
+                    document.getElementById('AUTO_TYPING').checked = s.AUTO_TYPING === "true";
+                    document.getElementById('BAD_NO_BLOCK').checked = s.BAD_NO_BLOCK === "true";
+                    document.getElementById('AI_CHAT').checked = s.AI_CHAT === "true";
+                    document.getElementById('AUTO_TIKTOK').checked = s.AUTO_TIKTOK === "true";
+                    document.getElementById('AUTO_NEWS').checked = s.AUTO_NEWS === "true";
+                    document.getElementById('WELCOME_GOODBYE').checked = s.WELCOME_GOODBYE === "true";
+                    
+                    // Handle special 'on/off' or 'online/offline' values
+                    document.getElementById('AUTO_VOICE').checked = s.AUTO_VOICE === "on";
+                    document.getElementById('ANTI_CALL').checked = s.ANTI_CALL === "on";
+                    document.getElementById('ANTI_DELETE').checked = s.ANTI_DELETE === "on";
+                    document.getElementById('PRESENCE').checked = s.PRESENCE === "online";
+
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert("Verification failed.");
+            }
+        }
+
+        async function save() {
+            const newSettings = {
+                WORK_TYPE: document.getElementById('WORK_TYPE').value,
+                MOVIE_MODE: document.getElementById('MOVIE_MODE').value,
+                AUTO_REPLY_MODE: document.getElementById('AUTO_REPLY_MODE').value,
+                AUTO_VIEW_STATUS: document.getElementById('AUTO_VIEW_STATUS').checked ? "true" : "false",
+                AUTO_LIKE_STATUS: document.getElementById('AUTO_LIKE_STATUS').checked ? "true" : "false",
+                AUTO_REPLY: document.getElementById('AUTO_REPLY').checked ? "true" : "false",
+                AUTO_STICKER: document.getElementById('AUTO_STICKER').checked ? "true" : "false",
+                ANTI_BAD: document.getElementById('ANTI_BAD').checked ? "true" : "false",
+                ANTI_LINK: document.getElementById('ANTI_LINK').checked ? "true" : "false",
+                ANTI_BOT: document.getElementById('ANTI_BOT').checked ? "true" : "false",
+                READ_COMMAND: document.getElementById('READ_COMMAND').checked ? "true" : "false",
+                AUTO_RECORDING: document.getElementById('AUTO_RECORDING').checked ? "true" : "false",
+                AUTO_TYPING: document.getElementById('AUTO_TYPING').checked ? "true" : "false",
+                BAD_NO_BLOCK: document.getElementById('BAD_NO_BLOCK').checked ? "true" : "false",
+                AI_CHAT: document.getElementById('AI_CHAT').checked ? "true" : "false",
+                AUTO_TIKTOK: document.getElementById('AUTO_TIKTOK').checked ? "true" : "false",
+                AUTO_NEWS: document.getElementById('AUTO_NEWS').checked ? "true" : "false",
+                WELCOME_GOODBYE: document.getElementById('WELCOME_GOODBYE').checked ? "true" : "false",
+                
+                // Specials
+                AUTO_VOICE: document.getElementById('AUTO_VOICE').checked ? "on" : "off",
+                ANTI_CALL: document.getElementById('ANTI_CALL').checked ? "on" : "off",
+                ANTI_DELETE: document.getElementById('ANTI_DELETE').checked ? "on" : "off",
+                PRESENCE: document.getElementById('PRESENCE').checked ? "online" : "composing"
+                    
+            };
+
+            try {
+                const response = await fetch('/api/update-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: sessionNumber, newSettings })
+                });
+
+                const data = await response.json();
+                alert(data.success ? "✅ Settings Saved Successfully!" : "❌ Error Saving Settings.");
+            } catch (e) {
+                alert("Failed to connect to server.");
+            }
+        }
+    </script>
+</body>
+</html>
