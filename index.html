@@ -26,8 +26,11 @@
             overflow-x: hidden;
         }
 
+        
 
 
+
+        
 
 .sidebar {
     position: fixed;
@@ -742,59 +745,8 @@
             font-weight: 600;
         }
 
-        /* --- SEPARATED SETTINGS BUTTON --- */
-        .settings-container {
-            margin-top: 30px;
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            justify-content: center;
-            animation: fade 1.2s ease;
-        }
+      
 
-        .settings-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            background: rgba(20, 0, 0, 0.7);
-            border: 1px solid rgba(255, 0, 0, 0.5);
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #fff;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 13px;
-            letter-spacing: 1.5px;
-            transition: all 0.4s ease;
-            position: relative;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-            animation: neon-pulse 2s infinite ease-in-out;
-        }
-
-        .settings-card i {
-            color: #ff0000;
-            font-size: 18px;
-            animation: rotateGear 4s linear infinite;
-        }
-
-        @keyframes neon-pulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); border-color: rgba(255, 0, 0, 0.4); }
-            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); border-color: rgba(255, 0, 0, 1); }
-        }
-
-        @keyframes rotateGear {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .settings-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            background: #ff0000;
-            color: #000;
-        }
-
-        .settings-card:hover i { color: #000; }
 
         /* --- FOOTER --- */
         footer {
@@ -835,6 +787,7 @@
         <a href="https://github.com/webscrape2003" class="side-btn"><i class="fab fa-github"></i> REPOSITORY</a>
         <a href="#" class="side-btn"><i class="fas fa-terminal"></i> COMMANDS</a>
         <a href="#" class="side-btn"><i class="fas fa-life-ring"></i> SUPPORT</a>
+        <a href="#" class="side-btn"><i class="fas fa-tools"></i> USER SETTINGS</a>
     </div>
 </div>
 
@@ -859,10 +812,7 @@
         </div>
     </header>
 
-    <audio id="bgMusic" autoplay loop>
-        <source src="https://raw.githubusercontent.com/dct-dula/database/72aa5d4b1f23483de55304b7fc56a33f0ffea903/ninja-samurai-fighter-asian-epic-rock-royalty-free-music-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
-    </audio>
-
+   
     <div class="particles" id="particles"></div>
 
     <main class="main-wrapper">
@@ -883,8 +833,7 @@
         </a>
     </div>
 
-
-
+        
 <div class="news-ticker-container">
     <div class="ticker-title">LIVE BOT FEED</div>
     <div class="ticker-wrap">
@@ -1166,13 +1115,11 @@
             </div>
         </div>
 
-        <div class="settings-container">
-            <a href="setting.html" class="settings-card">
-                <i class="fas fa-cog"></i>
-                <span>BOT SETTINGS CONTROL</span>
-            </a>
-        </div>
     </main>
+
+
+
+
 
 
     
@@ -1201,34 +1148,21 @@
 
     <footer>
         <div class="footer-links">
-            <a href="#"><i class="fab fa-github"></i> GITHUB</a>
+            <a href="https://github.com/webscrape2003"><i class="fab fa-github"></i> GITHUB</a>
             <a href="https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw"><i class="fab fa-whatsapp"></i> GROUP</a>
         </div>
-        <p>&copy; 2026 DCT NINJA X MD. All Rights Reserved.</p>
-        <p style="margin-top: 5px; font-size: 10px; color: #444; letter-spacing: 2px;">POWERED BY DCT DULA</p>
+        <p>&copy; 2026 VAJIRA MD LITE. All Rights Reserved.</p>
+        <p style="margin-top: 5px; font-size: 10px; color: #444; letter-spacing: 2px;">POWERED BY VajiraOfficial</p>
     </footer>
 
-    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
-    <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
-
-
+    
 <a href="https://wa.me/94719199757" class="floating-chat" target="_blank">
     <i class="fab fa-whatsapp"></i>
     <span class="chat-tooltip">CHAT WITH US</span>
 </a>
 
     
-    <script>
-    // --- MUSIC & SOUNDS ---
-    const bgMusic = document.getElementById("bgMusic");
-    bgMusic.volume = 0.2;
-    document.body.addEventListener("click", () => { bgMusic.play().catch(() => {}); }, { once: true });
-
-    const clickSound = document.getElementById("clickSound");
-    const successSound = document.getElementById("successSound");
-    function playClick() { clickSound.currentTime = 0; clickSound.play(); }
-    function playSuccess() { successSound.currentTime = 0; successSound.play(); }
-
+<script>
     // --- PARTICLES ---
     const container = document.getElementById("particles");
     for (let i = 0; i < 45; i++) {
@@ -1239,7 +1173,6 @@
         container.appendChild(s);
     }
 
-    // --- DOM ELEMENTS ---
     const pairResult = document.getElementById("pair");
     const numInput = document.getElementById("number");
     const countryCode = document.getElementById("cc");
@@ -1249,62 +1182,47 @@
     const qrUI = document.getElementById("qrUI");
     const qrImage = document.getElementById("qrImage");
 
-    // --- TAB SWITCHING LOGIC ---
     pairBtn.onclick = () => {
-        playClick();
         pairBtn.classList.add("active");
         qrBtn.classList.remove("active");
         pairUI.style.display = "block";
         qrUI.style.display = "none";
-        pairResult.style.display = "flex"; // Show big box for pairing
+        pairResult.style.display = "flex";
     };
 
-   qrBtn.onclick = async () => {
-    playClick();
-    qrBtn.classList.add("active");
-    pairBtn.classList.remove("active");
-    pairUI.style.display = "none";
-    qrUI.style.display = "block";
-    pairResult.style.display = "none";
+    qrBtn.onclick = async () => {
+        qrBtn.classList.add("active");
+        pairBtn.classList.remove("active");
+        pairUI.style.display = "none";
+        qrUI.style.display = "block";
+        pairResult.style.display = "none";
 
-    const qrImg = document.getElementById("qrImage");
-    
-    // Show a loading gif first so it's not a white blank
-    qrImg.src = "https://i.gifer.com/ZZ5H.gif"; 
+        const qrImg = document.getElementById("qrImage");
+        qrImg.src = "https://i.gifer.com/ZZ5H.gif"; 
 
-    try {
-        let res = await fetch('/qr'); 
-        let data = await res.json();
-        
-        if (data.qr) {
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
-            qrImg.src = qrUrl;
-            
-            // ADD THIS LINE TO SHOW THE IMAGE
-            qrImg.style.display = "block"; 
-            
-            playSuccess();
-        } else {
-            // If no QR string is found (maybe already connected)
-            qrImg.src = "https://cdn-icons-png.flaticon.com/512/564/564619.png"; 
-            console.log("No QR data received from server.");
+        try {
+            let res = await fetch('/qr'); 
+            let data = await res.json();
+            if (data.qr) {
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
+                qrImg.src = qrUrl;
+                qrImg.style.display = "block"; 
+            } else {
+                qrImg.src = "https://cdn-icons-png.flaticon.com/512/564/564619.png"; 
+            }
+        } catch (e) {
+            qrImg.src = "https://cdn-icons-png.flaticon.com/512/595/595067.png";
         }
-    } catch (e) {
-        qrImg.src = "https://cdn-icons-png.flaticon.com/512/595/595067.png";
-        console.error("Connection to /qr failed.");
-    }
-}; 
+    }; 
 
-    // --- PAIRING CODE LOGIC ---
     document.getElementById("submit").onclick = async () => {
-        playClick();
         if (!numInput.value || numInput.value.length < 8) {
             pairResult.innerHTML = "<span style='color:#ffa500'>Invalid Number</span>";
             return;
         }
 
         const fullNumber = countryCode.value + numInput.value;
-        pairResult.classList.remove("reveal-code"); // Reset animation
+        pairResult.classList.remove("reveal-code");
         pairResult.innerHTML = '<i class="fas fa-sync fa-spin"></i> &nbsp; SYSTEM LINKING...';
 
         try {
@@ -1313,14 +1231,13 @@
             
             setTimeout(() => {
                 if (data.code) {
-                    pairResult.classList.add("reveal-code"); // Trigger Big Box Animation
+                    pairResult.classList.add("reveal-code");
                     pairResult.innerHTML = `
                         <span id="finalCode" style="color:#ff0000; letter-spacing:4px; font-weight:bold; font-size:28px;">${data.code}</span>
                         <button class="copy-btn" onclick="copyCode()">
                             <i class="fas fa-copy"></i> COPY
                         </button>
                     `;
-                    playSuccess();
                 } else {
                     pairResult.innerHTML = "<span style='color:#ff4444'>FAIL: RETRY</span>";
                 }
@@ -1330,7 +1247,6 @@
         }
     };
 
-    // --- UTILITIES ---
     function copyCode() {
         const codeText = document.getElementById("finalCode").innerText;
         navigator.clipboard.writeText(codeText).then(() => {
@@ -1347,68 +1263,45 @@
     }
 
     document.getElementById("clearBtn").onclick = () => {
-        playClick();
         numInput.value = "";
         pairResult.classList.remove("reveal-code");
         pairResult.innerHTML = "READY...";
     };
 
     document.getElementById("joinBtn").onclick = () => {
-        playClick();
         window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw", "_blank");
     };
 
-
-// --- IMPROVED WIND GENERATOR ---
     const windBox = document.getElementById("windContainer");
-    
     function createWind() {
-        if (!windBox) return; // Safety check
-        
+        if (!windBox) return;
         const wind = document.createElement("div");
         wind.classList.add("wind-line");
-        
-        // Randomize size and position
         const width = Math.random() * 200 + 100; 
-        const topPos = Math.random() * 100; // Spreads lines from 0% to 100% height
-        const duration = Math.random() * 2 + 2; // Speed
-        
+        const topPos = Math.random() * 100;
+        const duration = Math.random() * 2 + 2;
         wind.style.width = width + "px";
-        wind.style.top = topPos + "vh"; // Uses vh to ensure full height coverage
+        wind.style.top = topPos + "vh";
         wind.style.left = "-250px"; 
         wind.style.animationDuration = duration + "s";
-        
         windBox.appendChild(wind);
-        
-        // Cleanup
-        setTimeout(() => {
-            wind.remove();
-        }, duration * 1000);
+        setTimeout(() => { wind.remove(); }, duration * 1000);
     }
-
-    // Faster interval for a more "active" wind feel
     setInterval(createWind, 200);
 
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("sidebarOverlay").classList.toggle("active");
+    }
 
+    function toggleUserInfo() {
+        alert("USER INFO: \nStatus: Premium Developer \nProject: Vajira MD \nRole: System Admin");
+    }
 
-// --- SIDEBAR CONTROL ---
-function toggleSidebar() {
-    playClick();
-    document.getElementById("sidebar").classList.toggle("active");
-    document.getElementById("sidebarOverlay").classList.toggle("active");
-}
+    
 
-function toggleUserInfo() {
-    playClick();
-    // Logic to show User Info (could be a modal or an alert)
-    alert("USER INFO: \nStatus: Premium Developer \nProject: Vajira MD \nRole: System Admin");
-}
-
-        
 </script>
+
 
 </body>
 </html>
-
-
-
