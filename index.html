@@ -29,7 +29,73 @@
         
 
 
+/* --- FLOATING SETTINGS BUTTON --- */
+.floating-settings {
+    position: fixed;
+    bottom: 100px; /* Positioned above the WhatsApp button */
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: rgba(15, 0, 0, 0.9);
+    color: #ff0000;
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    z-index: 1000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
+/* THE PERMANENT LABEL */
+.settings-label {
+    position: absolute;
+    right: 75px; /* Sits in front of the button */
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff0000;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-family: 'Orbitron', sans-serif; /* Matches your high-end UI theme */
+    white-space: nowrap;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    letter-spacing: 1px;
+}
+
+.floating-settings:hover {
+    transform: scale(1.1);
+    background: #ff0000;
+    color: #000;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+}
+
+/* Hover effect for the label */
+.floating-settings:hover .settings-label {
+    background: #ff0000;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    .floating-settings {
+        bottom: 85px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+    .settings-label {
+        right: 65px;
+        font-size: 9px;
+    }
+}
+
+        
         
 
 .sidebar {
@@ -1154,6 +1220,12 @@
         <p>&copy; 2026 VAJIRA MD LITE. All Rights Reserved.</p>
         <p style="margin-top: 5px; font-size: 10px; color: #444; letter-spacing: 2px;">POWERED BY VajiraOfficial</p>
     </footer>
+
+
+<a href="settings.html" class="floating-settings">
+    <i class="fas fa-cog"></i>
+    <span class="settings-label">USER SETTINGS</span>
+</a>
 
     
 <a href="https://wa.me/94719199757" class="floating-chat" target="_blank">
