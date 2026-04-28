@@ -162,7 +162,7 @@
 
         input#number {
             flex: 1;
-            width: 0; /* Allows flex-shrink on mobile */
+            width: 0;
             min-width: 100px;
             background: #0a0000;
             color: #fff;
@@ -247,6 +247,29 @@
             font-weight: 600;
         }
 
+        /* --- SETTINGS BUTTON FLOATING --- */
+        .settings-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto 0;
+            background: rgba(20, 0, 0, 0.8);
+            border: 1px solid #ff0000;
+            padding: 12px 20px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #fff;
+            width: fit-content;
+            transition: 0.3s;
+        }
+
+        .settings-card:hover {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 15px #ff0000;
+        }
+
         /* --- FOOTER --- */
         footer {
             width: 100%;
@@ -272,8 +295,6 @@
         }
 
         .footer-links a:hover { color: #fff; text-shadow: 0 0 5px #ff0000; }
-
-        .hidden { display: none; }
     </style>
 </head>
 
@@ -304,7 +325,7 @@
                     <h2 style="font-family: 'Orbitron'; color: #ff0000; margin-bottom: 15px; font-size: 1.2rem;">PAIRING SYSTEM</h2>
                     <div class="input-group">
                         <select id="cc">
-                            <option value="94">🇱🇰 +94</option>        
+                            <option value="94">🇱🇰 +94</option>         
                             <option value="93">🇦🇫 +93</option>
                             <option value="355">🇦🇱 +355</option>
                             <option value="213">🇩🇿 +213</option>
@@ -539,12 +560,13 @@
                     <button id="joinBtn">JOIN COMMUNITY</button>
                     <button id="clearBtn">RESET</button>
                 </div>
+
+                <a href="setting.html" class="settings-card">
+                    <i class="fas fa-microchip"></i>
+                    <span>BOT SETTINGS CONTROL</span>
+                </a>
             </div>
-        <a href="setting.html" class="settings-card">
-    <i class="fas fa-microchip"></i>
-    <span>BOT SETTINGS CONTROL</span>
-  </a>
-</div>
+        </div>
     </main>
 
     <footer>
