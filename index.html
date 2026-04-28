@@ -855,9 +855,12 @@
         let data = await res.json();
         
         if (data.qr) {
-            // This is the fix: It takes the QR string and turns it into an image
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
             qrImg.src = qrUrl;
+            
+            // ADD THIS LINE TO SHOW THE IMAGE
+            qrImg.style.display = "block"; 
+            
             playSuccess();
         } else {
             // If no QR string is found (maybe already connected)
