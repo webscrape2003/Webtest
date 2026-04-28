@@ -94,6 +94,7 @@
         .main-wrapper {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 40px 15px;
@@ -139,7 +140,7 @@
 
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- INPUT GROUP (MOBILE FIXED) --- */
+        /* --- INPUT GROUP --- */
         .input-group {
             display: flex;
             gap: 8px;
@@ -247,28 +248,59 @@
             font-weight: 600;
         }
 
-        /* --- SETTINGS BUTTON FLOATING --- */
+        /* --- SEPARATED SETTINGS BUTTON --- */
+        .settings-container {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            animation: fade 1.2s ease;
+        }
+
         .settings-card {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin: 20px auto 0;
-            background: rgba(20, 0, 0, 0.8);
-            border: 1px solid #ff0000;
-            padding: 12px 20px;
-            border-radius: 15px;
+            gap: 15px;
+            background: rgba(20, 0, 0, 0.7);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            padding: 15px 35px;
+            border-radius: 50px;
             text-decoration: none;
             color: #fff;
-            width: fit-content;
-            transition: 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            animation: neon-pulse 2s infinite ease-in-out;
+        }
+
+        .settings-card i {
+            color: #ff0000;
+            font-size: 18px;
+            animation: rotateGear 4s linear infinite;
+        }
+
+        @keyframes neon-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); border-color: rgba(255, 0, 0, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); border-color: rgba(255, 0, 0, 1); }
+        }
+
+        @keyframes rotateGear {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .settings-card:hover {
+            transform: translateY(-5px) scale(1.02);
             background: #ff0000;
             color: #000;
-            box-shadow: 0 0 15px #ff0000;
         }
+
+        .settings-card:hover i { color: #000; }
 
         /* --- FOOTER --- */
         footer {
@@ -288,12 +320,7 @@
             gap: 20px;
         }
 
-        .footer-links a {
-            color: #ff0000;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
+        .footer-links a { color: #ff0000; text-decoration: none; transition: 0.3s; }
         .footer-links a:hover { color: #fff; text-shadow: 0 0 5px #ff0000; }
     </style>
 </head>
@@ -560,12 +587,14 @@
                     <button id="joinBtn">JOIN COMMUNITY</button>
                     <button id="clearBtn">RESET</button>
                 </div>
-
-                <a href="setting.html" class="settings-card">
-                    <i class="fas fa-microchip"></i>
-                    <span>BOT SETTINGS CONTROL</span>
-                </a>
             </div>
+        </div>
+
+        <div class="settings-container">
+            <a href="setting.html" class="settings-card">
+                <i class="fas fa-cog"></i>
+                <span>BOT SETTINGS CONTROL</span>
+            </a>
         </div>
     </main>
 
@@ -573,7 +602,6 @@
         <div class="footer-links">
             <a href="#"><i class="fab fa-github"></i> GITHUB</a>
             <a href="https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw"><i class="fab fa-whatsapp"></i> GROUP</a>
-            <a href="setting.html"><i class="fas fa-microchip"></i> SETUP</a>
         </div>
         <p>&copy; 2026 DCT NINJA X MD. All Rights Reserved.</p>
         <p style="margin-top: 5px; font-size: 10px; color: #444; letter-spacing: 2px;">POWERED BY DCT DULA</p>
@@ -583,14 +611,17 @@
     <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
 
     <script>
-        // BACKGROUND MUSIC LOGIC
+        // MUSIC & SOUNDS
         const bgMusic = document.getElementById("bgMusic");
         bgMusic.volume = 0.2;
-        document.body.addEventListener("click", () => { 
-            bgMusic.play().catch(() => {}); 
-        }, { once: true });
+        document.body.addEventListener("click", () => { bgMusic.play().catch(() => {}); }, { once: true });
 
-        // PARTICLES ENGINE
+        const clickSound = document.getElementById("clickSound");
+        const successSound = document.getElementById("successSound");
+        function playClick() { clickSound.currentTime = 0; clickSound.play(); }
+        function playSuccess() { successSound.currentTime = 0; successSound.play(); }
+
+        // PARTICLES
         const container = document.getElementById("particles");
         for (let i = 0; i < 45; i++) {
             let s = document.createElement("span");
@@ -600,16 +631,11 @@
             container.appendChild(s);
         }
 
-        const clickSound = document.getElementById("clickSound");
-        const successSound = document.getElementById("successSound");
-        function playClick() { clickSound.currentTime = 0; clickSound.play(); }
-        function playSuccess() { successSound.currentTime = 0; successSound.play(); }
-
+        // LOGIC
         const pairResult = document.getElementById("pair");
         const numInput = document.getElementById("number");
         const countryCode = document.getElementById("cc");
 
-        // CORE LOGIC
         document.getElementById("submit").onclick = async () => {
             playClick();
             if (!numInput.value || numInput.value.length < 8) {
@@ -642,17 +668,15 @@
             }
         };
 
-        // COPY SYSTEM
         function copyCode() {
             const codeText = document.getElementById("finalCode").innerText;
             navigator.clipboard.writeText(codeText).then(() => {
                 const btn = document.querySelector(".copy-btn");
-                const original = btn.innerHTML;
                 btn.innerHTML = "COPIED";
                 btn.style.background = "#00ff00";
                 btn.style.color = "#000";
                 setTimeout(() => { 
-                    btn.innerHTML = original; 
+                    btn.innerHTML = '<i class="fas fa-copy"></i>'; 
                     btn.style.background = "rgba(255,0,0,0.2)";
                     btn.style.color = "#fff";
                 }, 2000);
