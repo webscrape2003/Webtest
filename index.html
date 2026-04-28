@@ -30,7 +30,80 @@
 
 
 
+/* --- TAB SWITCHER --- */
+.tab-switcher {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.5);
+    padding: 5px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,0,0,0.2);
+}
 
+.tab-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #888;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: #ff0000;
+    color: #000;
+    box-shadow: 0 0 10px rgba(255,0,0,0.3);
+}
+
+.ui-title {
+    font-family: 'Orbitron'; 
+    color: #ff0000; 
+    margin-bottom: 15px; 
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+/* --- QR BOX STYLING --- */
+.qr-box {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    border: 3px solid #ff0000;
+    overflow: hidden;
+}
+
+.qr-box img {
+    width: 100%;
+    height: 100%;
+}
+
+.qr-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ff0000;
+    box-shadow: 0 0 15px #ff0000;
+    animation: qrScan 2s infinite linear;
+}
+
+@keyframes qrScan {
+    0% { top: 0%; }
+    100% { top: 100%; }
+}
+
+
+        
 
 
 /* --- TOP NAVIGATION BAR (AFTER HEADER) --- */
@@ -438,7 +511,19 @@
         
         <div class="container">
             <div class="box">
-              
+
+
+<div class="tab-switcher">
+        <button id="showPair" class="tab-btn active">
+            <i class="fas fa-keyboard"></i> PAIR CODE
+        </button>
+        <button id="showQR" class="tab-btn">
+            <i class="fas fa-qrcode"></i> QR CODE
+        </button>
+    </div>
+
+
+                
                 <div id="pairUI">
                     <h2 style="font-family: 'Orbitron'; color: #ff0000; margin-bottom: 15px; font-size: 1.2rem;">PAIRING SYSTEM</h2>
                     <div class="input-group">
@@ -668,11 +753,21 @@
                             <option value="263">🇿🇼 +263</option>
                         </select>
                         <input id="number" type="tel" placeholder="7XXXXXXXX">
-                    </div>
-                    <button id="submit" class="main-btn">GENERATE CODE</button>
-                </div>
+        </div>
+        <button id="submit" class="main-btn">GENERATE CODE</button>
+    </div>
 
-                <div id="pair">READY...</div>
+    <div id="qrUI" style="display: none;">
+        <h2 class="ui-title">QR SCANNER</h2>
+        <div class="qr-box">
+            <img id="qrImage" src="https://www.dummies.com/wp-content/uploads/431590.image0.jpg" alt="QR Code">
+            <div class="qr-scan-line"></div>
+        </div>
+        <p style="font-size: 10px; color: #888; margin-top: 10px;">SCAN THIS QR TO LINK DEVICE</p>
+    </div>
+
+    <div id="pair" class="big-box-animation">READY...</div>
+    
 
                 <div class="actions">
                     <button id="joinBtn">JOIN COMMUNITY</button>
@@ -702,89 +797,131 @@
     <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
 
     <script>
-        // MUSIC & SOUNDS
-        const bgMusic = document.getElementById("bgMusic");
-        bgMusic.volume = 0.2;
-        document.body.addEventListener("click", () => { bgMusic.play().catch(() => {}); }, { once: true });
+    // --- MUSIC & SOUNDS ---
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.2;
+    document.body.addEventListener("click", () => { bgMusic.play().catch(() => {}); }, { once: true });
 
-        const clickSound = document.getElementById("clickSound");
-        const successSound = document.getElementById("successSound");
-        function playClick() { clickSound.currentTime = 0; clickSound.play(); }
-        function playSuccess() { successSound.currentTime = 0; successSound.play(); }
+    const clickSound = document.getElementById("clickSound");
+    const successSound = document.getElementById("successSound");
+    function playClick() { clickSound.currentTime = 0; clickSound.play(); }
+    function playSuccess() { successSound.currentTime = 0; successSound.play(); }
 
-        // PARTICLES
-        const container = document.getElementById("particles");
-        for (let i = 0; i < 45; i++) {
-            let s = document.createElement("span");
-            s.style.left = Math.random() * 100 + "vw";
-            s.style.animationDuration = (3 + Math.random() * 5) + "s";
-            s.style.opacity = Math.random();
-            container.appendChild(s);
+    // --- PARTICLES ---
+    const container = document.getElementById("particles");
+    for (let i = 0; i < 45; i++) {
+        let s = document.createElement("span");
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.animationDuration = (3 + Math.random() * 5) + "s";
+        s.style.opacity = Math.random();
+        container.appendChild(s);
+    }
+
+    // --- DOM ELEMENTS ---
+    const pairResult = document.getElementById("pair");
+    const numInput = document.getElementById("number");
+    const countryCode = document.getElementById("cc");
+    const pairBtn = document.getElementById("showPair");
+    const qrBtn = document.getElementById("showQR");
+    const pairUI = document.getElementById("pairUI");
+    const qrUI = document.getElementById("qrUI");
+    const qrImage = document.getElementById("qrImage");
+
+    // --- TAB SWITCHING LOGIC ---
+    pairBtn.onclick = () => {
+        playClick();
+        pairBtn.classList.add("active");
+        qrBtn.classList.remove("active");
+        pairUI.style.display = "block";
+        qrUI.style.display = "none";
+        pairResult.style.display = "flex"; // Show big box for pairing
+    };
+
+    qrBtn.onclick = async () => {
+        playClick();
+        qrBtn.classList.add("active");
+        pairBtn.classList.remove("active");
+        pairUI.style.display = "none";
+        qrUI.style.display = "block";
+        pairResult.style.display = "none"; // Hide big box for QR mode
+
+        // Auto-fetch QR Code
+        qrImage.src = "https://raw.githubusercontent.com/dct-dula/database/main/loading_qr.gif"; 
+        try {
+            let res = await fetch('/qr'); 
+            let data = await res.json();
+            if(data.qr) {
+                qrImage.src = data.qr;
+                playSuccess();
+            }
+        } catch (e) {
+            console.error("QR Load Failed");
+        }
+    };
+
+    // --- PAIRING CODE LOGIC ---
+    document.getElementById("submit").onclick = async () => {
+        playClick();
+        if (!numInput.value || numInput.value.length < 8) {
+            pairResult.innerHTML = "<span style='color:#ffa500'>Invalid Number</span>";
+            return;
         }
 
-        // LOGIC
-        const pairResult = document.getElementById("pair");
-        const numInput = document.getElementById("number");
-        const countryCode = document.getElementById("cc");
+        const fullNumber = countryCode.value + numInput.value;
+        pairResult.classList.remove("reveal-code"); // Reset animation
+        pairResult.innerHTML = '<i class="fas fa-sync fa-spin"></i> &nbsp; SYSTEM LINKING...';
 
-       document.getElementById("submit").onclick = async () => {
-            playClick();
-            if (!numInput.value || numInput.value.length < 8) {
-                pairResult.innerHTML = "<span style='color:#ffa500'>Invalid Number</span>";
-                return;
-            }
-
-            const fullNumber = countryCode.value + numInput.value;
-            pairResult.innerHTML = "SYSTEM LINKING...";
-
-            try {
-                let res = await fetch(`/code?number=${fullNumber}`);
-                let data = await res.json();
-                
-                setTimeout(() => {
-                    if (data.code) {
-                        pairResult.innerHTML = `
-                            <span id="finalCode" style="color:#ff0000; letter-spacing:4px; font-weight:bold; font-size:22px;">${data.code}</span>
-                            <button class="copy-btn" onclick="copyCode()">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        `;
-                        playSuccess();
-                    } else {
-                        pairResult.innerHTML = "<span style='color:#ff4444'>FAIL: RETRY</span>";
-                    }
-                }, 1200);
-            } catch {
-                pairResult.innerHTML = "<span style='color:#ff4444'>SERVER OFFLINE</span>";
-            }
-        };
-
-        function copyCode() {
-            const codeText = document.getElementById("finalCode").innerText;
-            navigator.clipboard.writeText(codeText).then(() => {
-                const btn = document.querySelector(".copy-btn");
-                btn.innerHTML = "COPIED";
-                btn.style.background = "#00ff00";
-                btn.style.color = "#000";
-                setTimeout(() => { 
-                    btn.innerHTML = '<i class="fas fa-copy"></i>'; 
-                    btn.style.background = "rgba(255,0,0,0.2)";
-                    btn.style.color = "#fff";
-                }, 2000);
-            });
+        try {
+            let res = await fetch(`/code?number=${fullNumber}`);
+            let data = await res.json();
+            
+            setTimeout(() => {
+                if (data.code) {
+                    pairResult.classList.add("reveal-code"); // Trigger Big Box Animation
+                    pairResult.innerHTML = `
+                        <span id="finalCode" style="color:#ff0000; letter-spacing:4px; font-weight:bold; font-size:28px;">${data.code}</span>
+                        <button class="copy-btn" onclick="copyCode()">
+                            <i class="fas fa-copy"></i> COPY
+                        </button>
+                    `;
+                    playSuccess();
+                } else {
+                    pairResult.innerHTML = "<span style='color:#ff4444'>FAIL: RETRY</span>";
+                }
+            }, 1200);
+        } catch {
+            pairResult.innerHTML = "<span style='color:#ff4444'>SERVER OFFLINE</span>";
         }
+    };
 
-        document.getElementById("clearBtn").onclick = () => {
-            playClick();
-            numInput.value = "";
-            pairResult.innerHTML = "READY...";
-        };
+    // --- UTILITIES ---
+    function copyCode() {
+        const codeText = document.getElementById("finalCode").innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const btn = document.querySelector(".copy-btn");
+            btn.innerHTML = "COPIED";
+            btn.style.background = "#00ff00";
+            btn.style.color = "#000";
+            setTimeout(() => { 
+                btn.innerHTML = '<i class="fas fa-copy"></i> COPY'; 
+                btn.style.background = "#ff0000";
+                btn.style.color = "#fff";
+            }, 2000);
+        });
+    }
 
-        document.getElementById("joinBtn").onclick = () => {
-            playClick();
-            window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw", "_blank");
-        };
-    </script>
+    document.getElementById("clearBtn").onclick = () => {
+        playClick();
+        numInput.value = "";
+        pairResult.classList.remove("reveal-code");
+        pairResult.innerHTML = "READY...";
+    };
+
+    document.getElementById("joinBtn").onclick = () => {
+        playClick();
+        window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw", "_blank");
+    };
+</script>
 
 </body>
 </html>
