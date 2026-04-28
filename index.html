@@ -846,28 +846,27 @@
     pairResult.style.display = "none";
 
     const qrImg = document.getElementById("qrImage");
-    qrImg.style.display = "none"; // Hide until loaded
+    
+    // Show a loading gif first so it's not a white blank
+    qrImg.src = "https://i.gifer.com/ZZ5H.gif"; 
 
     try {
         let res = await fetch('/qr'); 
         let data = await res.json();
         
         if (data.qr) {
-            // Check if data is already a full URL/Base64 or just raw string
-            if (data.qr.startsWith('data:image') || data.qr.startsWith('http')) {
-                qrImg.src = data.qr;
-            } else {
-                // If it's a raw string, we use a global QR generator API
-                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
-            }
-            
-            qrImg.onload = () => {
-                qrImg.style.display = "block";
-                playSuccess();
-            };
+            // This is the fix: It takes the QR string and turns it into an image
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
+            qrImg.src = qrUrl;
+            playSuccess();
+        } else {
+            // If no QR string is found (maybe already connected)
+            qrImg.src = "https://cdn-icons-png.flaticon.com/512/564/564619.png"; 
+            console.log("No QR data received from server.");
         }
     } catch (e) {
-        console.error("QR Fetch Error:", e);
+        qrImg.src = "https://cdn-icons-png.flaticon.com/512/595/595067.png";
+        console.error("Connection to /qr failed.");
     }
 }; 
 
