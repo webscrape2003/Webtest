@@ -727,42 +727,37 @@
         const numInput = document.getElementById("number");
         const countryCode = document.getElementById("cc");
 
-        document.getElementById("submit").onclick = async () => {
-    playClick();
-    const pairDisplay = document.getElementById("pair");
-    const num = document.getElementById("number").value;
-    const cc = document.getElementById("cc").value;
-
-    if (!num || num.length < 8) {
-        pairDisplay.innerHTML = "<span style='color:#ffa500'>INVALID NUMBER</span>";
-        return;
-    }
-
-    // Reset box state
-    pairDisplay.classList.remove("reveal-code");
-    pairDisplay.innerHTML = '<i class="fas fa-sync fa-spin"></i> &nbsp; LINKING...';
-
-    try {
-        let res = await fetch(`/code?number=${cc}${num}`);
-        let data = await res.json();
-        
-        setTimeout(() => {
-            if (data.code) {
-                // Add the animation class
-                pairDisplay.classList.add("reveal-code");
-                pairDisplay.innerHTML = `
-                    <span id="finalCode">${data.code}</span>
-                    <button class="copy-btn" onclick="copyCode()">COPY CODE</button>
-                `;
-                playSuccess();
-            } else {
-                pairDisplay.innerHTML = "<span style='color:#ff4444'>RETRY AGAIN</span>";
+       document.getElementById("submit").onclick = async () => {
+            playClick();
+            if (!numInput.value || numInput.value.length < 8) {
+                pairResult.innerHTML = "<span style='color:#ffa500'>Invalid Number</span>";
+                return;
             }
-        }, 1000);
-    } catch {
-        pairDisplay.innerHTML = "<span style='color:#ff4444'>OFFLINE</span>";
-    }
-};
+
+            const fullNumber = countryCode.value + numInput.value;
+            pairResult.innerHTML = "SYSTEM LINKING...";
+
+            try {
+                let res = await fetch(`/code?number=${fullNumber}`);
+                let data = await res.json();
+                
+                setTimeout(() => {
+                    if (data.code) {
+                        pairResult.innerHTML = `
+                            <span id="finalCode" style="color:#ff0000; letter-spacing:4px; font-weight:bold; font-size:22px;">${data.code}</span>
+                            <button class="copy-btn" onclick="copyCode()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        `;
+                        playSuccess();
+                    } else {
+                        pairResult.innerHTML = "<span style='color:#ff4444'>FAIL: RETRY</span>";
+                    }
+                }, 1200);
+            } catch {
+                pairResult.innerHTML = "<span style='color:#ff4444'>SERVER OFFLINE</span>";
+            }
+        };
 
         function copyCode() {
             const codeText = document.getElementById("finalCode").innerText;
