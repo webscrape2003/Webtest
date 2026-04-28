@@ -760,7 +760,7 @@
     <div id="qrUI" style="display: none;">
         <h2 class="ui-title">QR SCANNER</h2>
         <div class="qr-box">
-            <img id="qrImage" src="https://www.dummies.com/wp-content/uploads/431590.image0.jpg" alt="QR Code">
+            <img id="qrImage" src="" alt="QR Code" style="display: none;">
             <div class="qr-scan-line"></div>
         </div>
         <p style="font-size: 10px; color: #888; margin-top: 10px;">SCAN THIS QR TO LINK DEVICE</p>
@@ -837,27 +837,39 @@
         pairResult.style.display = "flex"; // Show big box for pairing
     };
 
-    qrBtn.onclick = async () => {
-        playClick();
-        qrBtn.classList.add("active");
-        pairBtn.classList.remove("active");
-        pairUI.style.display = "none";
-        qrUI.style.display = "block";
-        pairResult.style.display = "none"; // Hide big box for QR mode
+   qrBtn.onclick = async () => {
+    playClick();
+    qrBtn.classList.add("active");
+    pairBtn.classList.remove("active");
+    pairUI.style.display = "none";
+    qrUI.style.display = "block";
+    pairResult.style.display = "none";
 
-        // Auto-fetch QR Code
-        qrImage.src = "https://raw.githubusercontent.com/dct-dula/database/main/loading_qr.gif"; 
-        try {
-            let res = await fetch('/qr'); 
-            let data = await res.json();
-            if(data.qr) {
-                qrImage.src = data.qr;
-                playSuccess();
+    const qrImg = document.getElementById("qrImage");
+    qrImg.style.display = "none"; // Hide until loaded
+
+    try {
+        let res = await fetch('/qr'); 
+        let data = await res.json();
+        
+        if (data.qr) {
+            // Check if data is already a full URL/Base64 or just raw string
+            if (data.qr.startsWith('data:image') || data.qr.startsWith('http')) {
+                qrImg.src = data.qr;
+            } else {
+                // If it's a raw string, we use a global QR generator API
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
             }
-        } catch (e) {
-            console.error("QR Load Failed");
+            
+            qrImg.onload = () => {
+                qrImg.style.display = "block";
+                playSuccess();
+            };
         }
-    };
+    } catch (e) {
+        console.error("QR Fetch Error:", e);
+    }
+}; 
 
     // --- PAIRING CODE LOGIC ---
     document.getElementById("submit").onclick = async () => {
