@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DCT NINJA X MD</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 *{
@@ -16,17 +17,16 @@
 }
 
 body{
-  /* Darker, more atmospheric background */
   background: radial-gradient(circle at center, #1a0000 0%, #050000 70%, #000 100%);
   color:#fff;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
-  overflow:hidden;
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-/* PARTICLES - Enhanced with Glow */
+/* PARTICLES */
 .particles span{
   position:absolute;
   width:5px;
@@ -43,23 +43,25 @@ body{
   100%{transform:translateY(-10vh) scale(0.5); opacity:0}
 }
 
-/* BOX - Added Breathing Glow Animation */
-.box{
-  position: relative;
-  width:360px;
-  background:rgba(10,0,0,0.85);
-  border:1px solid rgba(255,0,0,0.5);
-  backdrop-filter:blur(15px);
-  border-radius:20px;
-  padding:80px 20px 30px;
-  text-align:center;
-  box-shadow: 0 0 20px rgba(255,0,0,0.2);
-  animation: boxGlow 3s ease-in-out infinite alternate, fade 1s ease;
+/* CONTAINER */
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  z-index: 10;
 }
 
-@keyframes boxGlow {
-  from { box-shadow: 0 0 15px rgba(255,0,0,0.2); border-color: rgba(255,0,0,0.4); }
-  to { box-shadow: 0 0 40px rgba(255,0,0,0.5); border-color: rgba(255,0,0,0.8); }
+/* MAIN BOX */
+.box{
+  position: relative;
+  background:rgba(10,0,0,0.85);
+  border:1px solid rgba(255,0,0,0.4);
+  backdrop-filter:blur(15px);
+  border-radius:25px;
+  padding:70px 25px 30px;
+  text-align:center;
+  box-shadow: 0 0 30px rgba(255,0,0,0.15);
+  animation: fade 1s ease;
 }
 
 @keyframes fade{
@@ -67,117 +69,172 @@ body{
   to{opacity:1;transform:translateY(0)}
 }
 
-/* AVATAR - Animated Neon Ring */
+/* AVATAR */
 .avatar{
   position:absolute;
-  top:-60px;
+  top:-50px;
   left:50%;
   transform:translateX(-50%);
-  width:120px;
-  height:120px;
+  width:100px;
+  height:100px;
   border-radius:50%;
   overflow:hidden;
   border: 2px solid #ff0000;
   box-shadow: 0 0 25px #ff0000;
-  z-index: 10;
 }
 
 .avatar img{
   width:100%;
   height:100%;
   object-fit:cover;
-  transition: 0.5s;
 }
 
-.avatar:hover img {
-  transform: scale(1.1);
+/* TABS */
+.tab-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: rgba(0,0,0,0.4);
+  padding: 5px;
+  border-radius: 12px;
 }
 
-/* TEXT - Sci-fi Ninja Style */
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: #888;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.tab-btn.active {
+  background: #ff0000;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255,0,0,0.5);
+}
+
+/* UI ELEMENTS */
 h2{
   font-family: 'Orbitron', sans-serif;
   color: #ff0000;
-  margin-bottom:5px;
+  margin-bottom:15px;
+  font-size: 1.4rem;
   text-shadow: 0 0 10px #ff0000;
-  letter-spacing: 1px;
 }
 
-p{
-  color:#bbb;
-  font-size:13px;
-}
-
-/* INPUT - Red Scanline Style */
-input{
-  width:100%;
-  margin-top:15px;
-  padding:12px;
-  border:none;
-  outline:none;
-  border-radius:10px;
-  background:#0a0000;
-  color:#fff;
-  border:1px solid #440000;
-  transition:.3s;
+input, select {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: #0a0000;
+  color: #fff;
+  border: 1px solid #440000;
+  border-radius: 10px;
+  outline: none;
   text-align: center;
 }
 
-input:focus{
-  border-color:#ff0000;
-  box-shadow:0 0 15px #ff0000;
-  background: #110000;
+input:focus {
+  border-color: #ff0000;
+  box-shadow: 0 0 15px rgba(255,0,0,0.3);
 }
 
-/* BUTTONS - High Intensity Red */
-button{
-  width:100%;
-  margin-top:12px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
+/* 📟 PAIR CODE GENERATE BOX THEME */
+#pair {
+  margin-top: 20px;
+  padding: 15px;
+  min-height: 65px;
+  background: rgba(255, 0, 0, 0.05);
+  border: 2px solid #ff0000;
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.2);
+  animation: pulseBorder 2s infinite;
+}
+
+#pair::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,0,0,0.2), transparent);
+  animation: scanLine 3s infinite;
+}
+
+@keyframes scanLine { 0% { left: -100%; } 100% { left: 100%; } }
+@keyframes pulseBorder {
+  0%, 100% { border-color: rgba(255,0,0,0.4); }
+  50% { border-color: rgba(255,0,0,1); box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+}
+
+/* BUTTONS */
+button.main-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
   background: linear-gradient(45deg, #8b0000, #ff0000);
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.3s;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
   text-transform: uppercase;
+  font-family: 'Orbitron', sans-serif;
   letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(255,0,0,0.3);
 }
 
-button:hover{
-  background: #ff0000;
-  box-shadow: 0 0 25px #ff0000;
-  transform:scale(1.03);
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-/* ACTIONS */
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
-}
-
-.actions button{
-  flex:1;
+.actions button {
+  flex: 1;
   background: transparent;
   border: 1px solid #ff0000;
   color: #ff0000;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
 }
 
-.actions button:hover {
-  background: #ff0000;
-  color: #000;
+/* SETTINGS CARD */
+.settings-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  background: rgba(255, 0, 0, 0.05);
+  border: 1px dashed rgba(255, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 12px;
+  transition: 0.3s;
 }
 
-/* INFO */
-#pair{
-  margin-top:12px;
-  font-weight:bold;
-  min-height:20px;
-  font-family: 'Orbitron', sans-serif;
-  text-shadow: 0 0 8px rgba(255,0,0,0.8);
-}
+.settings-card:hover { background: rgba(255, 0, 0, 0.15); border-style: solid; }
+.settings-card i { color: #ff0000; animation: rotate 4s linear infinite; }
+@keyframes rotate { from {transform:rotate(0deg)} to {transform:rotate(360deg)} }
+
+.hidden { display: none; }
 </style>
 </head>
 
@@ -189,38 +246,49 @@ button:hover{
 
 <div class="particles" id="particles"></div>
 
-<div class="box">
-  <div class="avatar">
-    <img src="https://raw.githubusercontent.com/dct-dula/database/refs/heads/main/WhatsApp%20Image%202026-04-18%20at%2022.32.51.jpeg">
+<div class="container">
+  <div class="box">
+    <div class="avatar">
+      <img src="https://raw.githubusercontent.com/dct-dula/database/refs/heads/main/WhatsApp%20Image%202026-04-18%20at%2022.32.51.jpeg">
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn active" id="pTab" onclick="switchMode('pair')">PAIRING</button>
+      <button class="tab-btn" id="qTab" onclick="switchMode('qr')">QR SCAN</button>
+    </div>
+
+    <div id="pairUI">
+      <h2>NINJA PAIRING</h2>
+      <input id="number" type="tel" placeholder="947XXXXXXXX">
+      <button id="submit" class="main-btn">GET CODE</button>
+    </div>
+
+    <div id="qrUI" class="hidden">
+      <h2>QR DEPLOY</h2>
+      <button class="main-btn">GENERATE QR</button>
+    </div>
+
+    <div id="pair">READY...</div>
+
+    <div class="actions">
+      <button id="joinBtn">JOIN GROUP</button>
+      <button id="clearBtn">CLEAR</button>
+    </div>
   </div>
 
-  <h2>DCT NINJA X MD</h2>
-  <p>Enter WhatsApp number with country code</p>
-
-  <input id="number" type="tel" placeholder="947XXXXXXXX">
-
-  <button id="submit">GET CODE</button>
-
-  <div id="pair"></div>
-
-  <div class="actions">
-    <button id="joinBtn">JOIN</button>
-    <button id="clearBtn">CLEAR</button>
-  </div>
+  <a href="setting.html" class="settings-card">
+    <i class="fas fa-microchip"></i>
+    <span>BOT SETTINGS CONTROL</span>
+  </a>
 </div>
 
 <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
 <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
 
 <script>
-/* 🔊 AUTO PLAY FIX + VOLUME */
 const bgMusic = document.getElementById("bgMusic");
 bgMusic.volume = 0.3;
-
-// Some browsers block autoplay → start on first click
-document.body.addEventListener("click", () => {
-  bgMusic.play().catch(()=>{});
-}, { once: true });
+document.body.addEventListener("click", () => { bgMusic.play().catch(()=>{}); }, { once: true });
 
 /* PARTICLES */
 const container=document.getElementById("particles");
@@ -231,18 +299,26 @@ for(let i=0;i<50;i++){
   container.appendChild(s);
 }
 
-/* SOUND */
+/* SOUNDS */
 const clickSound=document.getElementById("clickSound");
 const successSound=document.getElementById("successSound");
+function playClick(){ clickSound.currentTime=0; clickSound.play(); }
+function playSuccess(){ successSound.currentTime=0; successSound.play(); }
 
-function playClick(){
-  clickSound.currentTime=0;
-  clickSound.play();
-}
-
-function playSuccess(){
-  successSound.currentTime=0;
-  successSound.play();
+/* TAB SWITCHING */
+function switchMode(mode) {
+  playClick();
+  const pairUI = document.getElementById('pairUI');
+  const qrUI = document.getElementById('qrUI');
+  const pTab = document.getElementById('pTab');
+  const qTab = document.getElementById('qTab');
+  if(mode === 'pair') {
+    pairUI.classList.remove('hidden'); qrUI.classList.add('hidden');
+    pTab.classList.add('active'); qTab.classList.remove('active');
+  } else {
+    pairUI.classList.add('hidden'); qrUI.classList.remove('hidden');
+    qTab.classList.add('active'); pTab.classList.remove('active');
+  }
 }
 
 /* TYPE EFFECT */
@@ -260,54 +336,43 @@ function typeText(el,text,speed=40){
 }
 
 /* LOGIC */
-const pair=document.getElementById("pair");
-const num=document.getElementById("number");
+const pairResult=document.getElementById("pair");
+const numInput=document.getElementById("number");
 
 document.getElementById("submit").onclick=async()=>{
   playClick();
-
-  if(!num.value || num.value.length<10){
-    typeText(pair,"Invalid number",30);
+  if(!numInput.value || numInput.value.length<10){
+    typeText(pairResult,"Invalid number",30);
     return;
   }
 
-  typeText(pair,"Initializing ninja system...",25);
+  typeText(pairResult,"Initializing ninja system...",25);
 
   try{
-    let res=await fetch(`/code?number=${num.value}`);
+    let res=await fetch(`/code?number=${numInput.value}`);
     let data=await res.json();
 
-    setTimeout(()=>{
-      typeText(pair,"Generating secure code...",25);
-    }, 800);
+    setTimeout(()=>{ typeText(pairResult,"Generating secure code...",25); }, 800);
 
     setTimeout(()=>{
-      pair.innerHTML=`<span style="color:red">CODE: ${data.code || "ERROR"}</span>`;
+      pairResult.innerHTML=`<span style="color:#ff0000; letter-spacing:4px; font-weight:bold">${data.code || "ERROR"}</span>`;
       playSuccess();
     }, 1600);
-
-  }catch{
-    typeText(pair,"Server Error",30);
+  } catch {
+    typeText(pairResult,"Server Error",30);
   }
 };
 
 document.getElementById("clearBtn").onclick=()=>{
   playClick();
-  num.value="";
-  pair.innerHTML="";
+  numInput.value="";
+  pairResult.innerHTML="READY...";
 };
 
 document.getElementById("joinBtn").onclick=()=>{
   playClick();
   window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw","_blank");
 };
-
-/* ENTER KEY */
-num.addEventListener("keydown",(e)=>{
-  if(e.key==="Enter"){
-    document.getElementById("submit").click();
-  }
-});
 </script>
 
 </body>
