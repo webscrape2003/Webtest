@@ -28,6 +28,42 @@
 
 
 
+/* --- WIND FLOW ANIMATION --- */
+.wind-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Behind everything */
+    overflow: hidden;
+}
+
+.wind-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.4), transparent);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.2);
+    border-radius: 100px;
+    animation: windFlow linear infinite;
+}
+
+@keyframes windFlow {
+    0% {
+        transform: translateX(-100%) translateY(0);
+        opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% {
+        transform: translateX(200%) translateY(20px);
+        opacity: 0;
+    }
+}
+
+
+        
 
 /* --- BOT INFO SECTION --- */
 .bot-info-container {
@@ -559,6 +595,10 @@
 
 <body>
 
+
+
+<div class="wind-container" id="windContainer"></div>    
+
     <header>
         <div class="logo"><i class="fas fa-user-ninja"></i> DCT NINJA X</div>
         <div class="status-box">
@@ -1042,6 +1082,38 @@
         playClick();
         window.open("https://chat.whatsapp.com/G7qafxv7mGrH3LVGuDMUHw", "_blank");
     };
+
+
+// --- WIND GENERATOR ---
+    const windBox = document.getElementById("windContainer");
+    
+    function createWind() {
+        const wind = document.createElement("div");
+        wind.classList.add("wind-line");
+        
+        // Randomize size and position
+        const width = Math.random() * 150 + 50; // Length of wind streak
+        const top = Math.random() * 100; // Vertical position
+        const duration = Math.random() * 3 + 2; // Speed (2s to 5s)
+        const delay = Math.random() * 5;
+        
+        wind.style.width = width + "px";
+        wind.style.top = top + "%";
+        wind.style.left = "-150px";
+        wind.style.animationDuration = duration + "s";
+        wind.style.animationDelay = delay + "s";
+        
+        windBox.appendChild(wind);
+        
+        // Remove after animation to save memory
+        setTimeout(() => {
+            wind.remove();
+        }, (duration + delay) * 1000);
+    }
+
+    // Generate wind lines every 300ms
+    setInterval(createWind, 300);
+        
 </script>
 
 </body>
