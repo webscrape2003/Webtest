@@ -3,173 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vajira Rathnayaka | System Architect</title>
+    <title>W.M Vajira Rathnayaka | Official Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Outfit:wght@100;400;900&family=JetBrains+Mono&display=swap');
 
         :root {
-            --blood-red: #ff003c;
-            --dark-bg: #030305;
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.07);
-            --glow: 0 0 25px rgba(255, 0, 60, 0.3);
+            --blood: #ff003c;
+            --dark-core: #020204;
+            --neon-glow: 0 0 30px rgba(255, 0, 60, 0.4);
+            --glass: rgba(255, 255, 255, 0.02);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: var(--dark-bg);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        body { 
+            background: var(--dark-core); 
+            color: #fff; 
+            font-family: 'Outfit', sans-serif; 
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 10%, rgba(255, 0, 60, 0.05) 0%, transparent 50%);
+            scroll-behavior: smooth;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
-
-        /* --- PROFILE HEADER --- */
-        .profile-card {
-            background: var(--card-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 50px;
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            margin-bottom: 40px;
-            animation: slideIn 1s ease-out;
+        /* --- HYPER-ANIMATED BACKGROUND --- */
+        .plasma-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #0a0005 0%, #020204 100%);
+            z-index: -2;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .floating-orb {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 0, 60, 0.08) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(80px);
+            animation: moveOrb 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes moveOrb {
+            0% { transform: translate(-20%, -20%); }
+            100% { transform: translate(40%, 40%); }
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 10%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-logo { font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--blood); letter-spacing: 5px; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 0 20px;
+        }
+
+        .profile-frame {
+            position: relative; padding: 10px;
+            background: linear-gradient(45deg, var(--blood), transparent, var(--blood));
+            border-radius: 40px; margin-bottom: 30px;
+            animation: borderRotate 4s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
         .profile-img {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--blood-red), #550014);
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            font-weight: 800;
-            box-shadow: var(--glow);
-            transform: rotate(-5deg);
+            width: 220px; height: 220px; background: #000;
+            border-radius: 35px; display: flex; align-items: center; justify-content: center;
+            font-size: 5rem; font-weight: 900; color: var(--blood);
+            text-shadow: var(--neon-glow);
         }
 
-        .profile-info h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
-        .profile-info h1 span { color: var(--blood-red); }
-        .tagline { color: #888; font-family: 'JetBrains Mono'; font-size: 0.9rem; margin-bottom: 20px; display: block; }
-
-        /* --- INFO GRID --- */
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -2px; line-height: 0.9; }
+        .hero h1 span { color: var(--blood); filter: drop-shadow(var(--neon-glow)); }
         
-        .box {
-            background: var(--card-glass);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .box:hover { border-color: var(--blood-red); transform: translateY(-10px); background: rgba(255, 255, 255, 0.05); }
+        .typewriter { font-family: 'JetBrains Mono'; color: #666; font-size: 1rem; margin-top: 20px; }
+
+        /* --- INFO GRID (STORY) --- */
+        .content-wrap { max-width: 1200px; margin: 0 auto; padding: 100px 20px; }
         
-        .box i { color: var(--blood-red); font-size: 1.5rem; margin-bottom: 20px; display: block; }
-        .box h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #666; margin-bottom: 10px; }
-        .box p { font-size: 1.1rem; font-weight: 600; color: #eee; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
-        /* --- TECHNICAL EXPERTISE (Linked to index.js) --- */
-        .tech-section { margin-top: 60px; }
-        .tech-section h2 { margin-bottom: 30px; font-size: 1.8rem; border-left: 4px solid var(--blood-red); padding-left: 20px; }
-
-        .skill-bar {
-            background: rgba(255,255,255,0.05); border-radius: 50px; height: 12px; margin-bottom: 25px; position: relative; overflow: hidden;
+        .card {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 35px; padding: 40px; position: relative; overflow: hidden;
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .skill-progress { height: 100%; background: var(--blood-red); box-shadow: var(--glow); border-radius: 50px; }
 
-        /* --- CONTACT LINKS --- */
-        .contact-row { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
-        .c-btn {
-            text-decoration: none; padding: 12px 25px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 10px; transition: 0.3s; border: 1px solid var(--border); color: #fff;
+        .card:hover { 
+            transform: scale(1.02) translateY(-10px); 
+            background: rgba(255, 0, 60, 0.03);
+            border-color: var(--blood);
         }
-        .c-btn.wa { background: #25d36622; border-color: #25d366; color: #25d366; }
-        .c-btn.email { background: #ff003c22; border-color: var(--blood-red); color: var(--blood-red); }
-        .c-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); filter: brightness(1.2); }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .profile-card { flex-direction: column; text-align: center; padding: 30px; }
-            .profile-img { width: 150px; height: 150px; font-size: 3rem; }
+        .card i { font-size: 2rem; color: var(--blood); margin-bottom: 25px; }
+        .card h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: #555; margin-bottom: 15px; }
+        .card p { font-size: 1.3rem; font-weight: 600; line-height: 1.4; color: #eee; }
+
+        /* --- TECHNICAL DEEP-DIVE --- */
+        .specs { margin-top: 50px; background: #000; border-radius: 40px; padding: 50px; border: 1px solid var(--border); }
+        .spec-line { display: flex; justify-content: space-between; margin-bottom: 25px; align-items: center; }
+        .spec-name { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--blood); }
+        .spec-bar { flex: 1; height: 4px; background: #111; margin: 0 30px; border-radius: 10px; position: relative; }
+        .spec-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--blood); box-shadow: var(--neon-glow); border-radius: 10px; }
+
+        /* --- CONTACT FLOW --- */
+        .contact-panel { text-align: center; padding: 100px 0; }
+        .cta-btn {
+            background: transparent; border: 1px solid var(--blood); color: #fff;
+            padding: 20px 60px; font-size: 1.2rem; font-weight: 800; border-radius: 100px;
+            cursor: pointer; transition: 0.4s; position: relative; overflow: hidden;
+            text-decoration: none; display: inline-block;
         }
+        .cta-btn:hover { background: var(--blood); box-shadow: var(--neon-glow); color: #000; }
+
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--dark-core); }
+        ::-webkit-scrollbar-thumb { background: var(--blood); border-radius: 10px; }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="profile-card">
-        <div class="profile-img">W</div>
-        <div class="profile-info">
-            <span class="tagline">SYSTEM_ARCHITECT_INITIALIZED</span>
-            <h1>W.M <span>Vajira Rathnayaka</span></h1>
-            <p style="color: #aaa; line-height: 1.6; max-width: 500px;">
-                Lead Developer at Technical Dark Devils. Specialized in Node.js automation, Baileys framework, and MongoDB cloud synchronization.
-            </p>
-            <div class="contact-row">
-                <a href="https://wa.me/94719199757" class="c-btn wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                <a href="mailto:vajirarathnayaka529@gmail.com" class="c-btn email"><i class="far fa-envelope"></i> Email Me</a>
+    <div class="plasma-bg">
+        <div class="floating-orb"></div>
+    </div>
+
+    <nav>
+        <div class="nav-logo">VAJIRA_R</div>
+        <div style="font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #444;">BALANGODA // SRI_LANKA</div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <center>
+                <div class="profile-frame">
+                    <div class="profile-img">V</div>
+                </div>
+            </center>
+            <h1>W.M VAJIRA<br><span>RATHNAYAKA</span></h1>
+            <div class="typewriter" id="type">SYSTEM_ARCHITECT // HOTEL_EXECUTIVE // BOT_CREATOR</div>
+        </div>
+    </section>
+
+    <div class="content-wrap">
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h2>Origins</h2>
+                <p>Born in Nawanaliya, Balangoda, Sri Lanka [70100]. A local spirit with a global digital footprint.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-concierge-bell"></i>
+                <h2>Executive</h2>
+                <p>Professional Hotel Receptionist by day, managing guest experiences with elite precision.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-microchip"></i>
+                <h2>Bot Engineer</h2>
+                <p>Architect of Vajira-MD, mastering Baileys sockets and high-speed MongoDB integrations.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-fingerprint"></i>
+                <h2>Profile</h2>
+                <p>23 Years of innovation. Continuously bridging the gap between hospitality and technology.</p>
             </div>
         </div>
+
+        <div class="specs">
+            <h3 style="margin-bottom: 40px; text-transform: uppercase; letter-spacing: 5px; font-size: 0.8rem; color: #555;">Technical Core Intelligence</h3>
+            
+            <div class="spec-line">
+                <span class="spec-name">Node.js / Baileys</span>
+                <div class="spec-bar"><div class="spec-fill" style="width: 95%;"></div></div>
+                <span style="font-family: 'JetBrains Mono';">95%</span>
+            </div>
+
+            <div class="spec-line">
+                <span class="spec-name">MongoDB Sync</span>
+                <div class="spec-bar"><div class="spec-fill" style="width: 88%;"></div></div>
+                <span style="font-family: 'JetBrains Mono';">88%</span>
+            </div>
+
+            <div class="spec-line">
+                <span class="spec-name">API / Webhooks</span>
+                <div class="spec-bar"><div class="spec-fill" style="width: 92%;"></div></div>
+                <span style="font-family: 'JetBrains Mono';">92%</span>
+            </div>
+
+            <div class="spec-line">
+                <span class="spec-name">UX / Cyber-UI</span>
+                <div class="spec-bar"><div class="spec-fill" style="width: 90%;"></div></div>
+                <span style="font-family: 'JetBrains Mono';">90%</span>
+            </div>
+        </div>
+
+        <section class="contact-panel">
+            <h2 style="font-size: 3rem; margin-bottom: 40px;">GET IN <span>TOUCH</span></h2>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <a href="https://wa.me/94719199757" class="cta-btn">WHATSAPP: 071 919 9757</a>
+                <a href="mailto:vajirarathnayaka529@gmail.com" class="cta-btn" style="border-color: #fff;">EMAIL VAJIRA</a>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 50px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <p style="font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #333;">
+                SERIAL_NUMBER: 0719199757 // BUILD: 2026_ULTRA // DESIGNED_BY: VAJIRA
+            </p>
+        </footer>
     </div>
 
-    <div class="info-grid">
-        <div class="box">
-            <i class="fas fa-user"></i>
-            <h3>Age</h3>
-            <p>23 Years Old</p>
-        </div>
-        <div class="box">
-            <i class="fas fa-map-marker-alt"></i>
-            <h3>Location</h3>
-            <p>Nawanaliya, Balangoda</p>
-        </div>
-        <div class="box">
-            <i class="fas fa-globe-asia"></i>
-            <h3>Country</h3>
-            <p>Sri Lanka (70100)</p>
-        </div>
-        <div class="box">
-            <i class="fas fa-briefcase"></i>
-            <h3>Profession</h3>
-            <p>Hotel Receptionist & Developer</p>
-        </div>
-    </div>
-
-    <div class="tech-section">
-        <h2>Technical Core</h2>
-        <div style="background: var(--card-glass); padding: 40px; border-radius: 32px; border: 1px solid var(--border);">
-            <p style="margin-bottom: 10px;">Node.js / Baileys Socket Engine</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
-            
-            <p style="margin-bottom: 10px;">MongoDB / Session Persistence</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 88%;"></div></div>
-            
-            <p style="margin-bottom: 10px;">JavaScript / API Integration (Axios)</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 92%;"></div></div>
-            
-            <p style="margin-bottom: 10px;">System UI / CSS3 Animations</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
-        </div>
-    </div>
-
-    <footer style="margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 40px;">
-        <p style="color: #444; font-size: 0.8rem; font-family: 'JetBrains Mono';">
-            &copy; 2026 VAJIRA-MD-ULTRA // POWERED BY TECHNICAL DARK DEVILS
-        </p>
-    </footer>
-</div>
-
+    <script>
+        // Simple 3D Parallax effect for cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                let x = e.offsetX;
+                let y = e.offsetY;
+                let w = card.clientWidth;
+                let h = card.clientHeight;
+                let moveX = (x - w/2) / 10;
+                let moveY = (y - h/2) / 10;
+                card.style.transform = `perspective(1000px) rotateY(${moveX}deg) rotateX(${-moveY}deg) scale(1.05)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
+            });
+        });
+    </script>
 </body>
 </html>
