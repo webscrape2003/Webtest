@@ -3,173 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vajira Rathnayaka | System Architect</title>
+    <title>Vajira MD Lite | Support Core</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;600;900&family=JetBrains+Mono&display=swap');
 
         :root {
-            --blood-red: #ff003c;
-            --dark-bg: #030305;
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.07);
-            --glow: 0 0 25px rgba(255, 0, 60, 0.3);
+            --blood: #e60000;
+            --dark-void: #050000;
+            --glass: rgba(230, 0, 0, 0.03);
+            --border: rgba(230, 0, 0, 0.2);
+            --neon-glow: 0 0 25px rgba(230, 0, 0, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: var(--dark-bg);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        body { 
+            background: var(--dark-void); 
+            color: #fff; 
+            font-family: 'Outfit', sans-serif; 
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 10%, rgba(255, 0, 60, 0.05) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% -20%, #200000 0%, #050000 100%);
+        }
+
+        /* --- AMBIENT BLOOD FLOW ANIMATION --- */
+        .ambient-flow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.4;
+            background: linear-gradient(180deg, transparent 0%, rgba(230, 0, 0, 0.05) 50%, transparent 100%);
+            animation: flow 8s infinite linear;
+        }
+
+        @keyframes flow {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
 
-        /* --- PROFILE HEADER --- */
-        .profile-card {
-            background: var(--card-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 50px;
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            margin-bottom: 40px;
-            animation: slideIn 1s ease-out;
+        /* --- HEADER BRANDING --- */
+        .brand-header { text-align: center; margin-bottom: 80px; }
+        .brand-header h1 { 
+            font-family: 'Syncopate', sans-serif; font-size: 2.8rem; 
+            letter-spacing: -2px; color: #fff; text-shadow: var(--neon-glow);
+            text-transform: uppercase;
+        }
+        .brand-header span { color: var(--blood); }
+        .brand-header p { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: #555; letter-spacing: 6px; margin-top: 15px; }
+
+        /* --- SUPPORT NODES --- */
+        .support-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+
+        .node {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 40px;
+            padding: 45px; position: relative; overflow: hidden; backdrop-filter: blur(15px);
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .node:hover {
+            border-color: var(--blood); transform: scale(1.03);
+            background: rgba(230, 0, 0, 0.08); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--blood-red), #550014);
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            font-weight: 800;
-            box-shadow: var(--glow);
-            transform: rotate(-5deg);
+        .node i { font-size: 3rem; color: var(--blood); margin-bottom: 30px; display: block; filter: drop-shadow(var(--neon-glow)); }
+        .node h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 12px; letter-spacing: -1px; }
+        .node p { color: #aaa; font-size: 0.95rem; line-height: 1.7; margin-bottom: 30px; }
+
+        .btn-link {
+            display: inline-flex; align-items: center; gap: 10px; text-decoration: none; 
+            color: #fff; border: 1px solid var(--blood); padding: 14px 35px; border-radius: 100px; 
+            font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s;
         }
 
-        .profile-info h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
-        .profile-info h1 span { color: var(--blood-red); }
-        .tagline { color: #888; font-family: 'JetBrains Mono'; font-size: 0.9rem; margin-bottom: 20px; display: block; }
+        .btn-link:hover { background: var(--blood); box-shadow: var(--neon-glow); color: #000; }
 
-        /* --- INFO GRID --- */
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        
-        .box {
-            background: var(--card-glass);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* --- SYSTEM DIAGNOSTICS (FROM INDEX.JS) --- */
+        .status-panel {
+            margin-top: 80px; background: rgba(0,0,0,0.6); border: 1px solid var(--border);
+            border-radius: 40px; padding: 50px; position: relative;
         }
-        .box:hover { border-color: var(--blood-red); transform: translateY(-10px); background: rgba(255, 255, 255, 0.05); }
-        
-        .box i { color: var(--blood-red); font-size: 1.5rem; margin-bottom: 20px; display: block; }
-        .box h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #666; margin-bottom: 10px; }
-        .box p { font-size: 1.1rem; font-weight: 600; color: #eee; }
 
-        /* --- TECHNICAL EXPERTISE (Linked to index.js) --- */
-        .tech-section { margin-top: 60px; }
-        .tech-section h2 { margin-bottom: 30px; font-size: 1.8rem; border-left: 4px solid var(--blood-red); padding-left: 20px; }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .pulse-dot { width: 12px; height: 12px; background: var(--blood); border-radius: 50%; display: inline-block; animation: blink 1.5s infinite; margin-right: 10px; box-shadow: var(--neon-glow); }
 
-        .skill-bar {
-            background: rgba(255,255,255,0.05); border-radius: 50px; height: 12px; margin-bottom: 25px; position: relative; overflow: hidden;
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .data-card { background: #000; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); }
+        .data-card h4 { font-size: 0.65rem; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .data-card p { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--blood); font-weight: 700; }
+
+        /* --- OWNER IDENTITY --- */
+        .identity-footer {
+            margin-top: 60px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 50px;
         }
-        .skill-progress { height: 100%; background: var(--blood-red); box-shadow: var(--glow); border-radius: 50px; }
 
-        /* --- CONTACT LINKS --- */
-        .contact-row { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
-        .c-btn {
-            text-decoration: none; padding: 12px 25px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 10px; transition: 0.3s; border: 1px solid var(--border); color: #fff;
+        .owner-capsule {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 10px;
+            padding: 30px; border-radius: 30px; background: var(--glass); border: 1px solid var(--border);
         }
-        .c-btn.wa { background: #25d36622; border-color: #25d366; color: #25d366; }
-        .c-btn.email { background: #ff003c22; border-color: var(--blood-red); color: var(--blood-red); }
-        .c-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); filter: brightness(1.2); }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .profile-card { flex-direction: column; text-align: center; padding: 30px; }
-            .profile-img { width: 150px; height: 150px; font-size: 3rem; }
-        }
+        .owner-capsule h3 { font-size: 1.2rem; font-weight: 800; }
+        .owner-capsule span { font-size: 0.8rem; color: #666; font-family: 'JetBrains Mono'; }
+
+        footer { text-align: center; margin-top: 60px; padding: 20px; font-size: 0.65rem; color: #222; letter-spacing: 8px; }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="profile-card">
-        <div class="profile-img">W</div>
-        <div class="profile-info">
-            <span class="tagline">SYSTEM_ARCHITECT_INITIALIZED</span>
-            <h1>W.M <span>Vajira Rathnayaka</span></h1>
-            <p style="color: #aaa; line-height: 1.6; max-width: 500px;">
-                Lead Developer at Technical Dark Devils. Specialized in Node.js automation, Baileys framework, and MongoDB cloud synchronization.
-            </p>
-            <div class="contact-row">
-                <a href="https://wa.me/94719199757" class="c-btn wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                <a href="mailto:vajirarathnayaka529@gmail.com" class="c-btn email"><i class="far fa-envelope"></i> Email Me</a>
+    <div class="ambient-flow"></div>
+
+    <div class="container">
+        
+        <header class="brand-header">
+            <h1>VAJIRA MD <span>LITE</span></h1>
+            <p>SUPPORT // SYSTEM // INTERFACE</p>
+        </header>
+
+        <div class="support-grid">
+            <div class="node">
+                <i class="fab fa-whatsapp"></i>
+                <h2>WhatsApp Nexus</h2>
+                <p>Access the official Vajira MD Lite support group for configuration help and bug fixes.</p>
+                <a href="https://wa.me/94719199757" class="btn-link">Initialize Chat <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="node">
+                <i class="fas fa-shield-alt"></i>
+                <h2>System Architect</h2>
+                <p>Direct communication for commercial inquiries or serious technical vulnerability reports.</p>
+                <a href="mailto:vajirarathnayaka529@gmail.com" class="btn-link">Send Protocol <i class="fas fa-paper-plane"></i></a>
+            </div>
+
+            <div class="node">
+                <i class="fas fa-book-dead"></i>
+                <h2>Core Guide</h2>
+                <p>Learn the logic of Anti-Delete, Auto-Translate (MyMemory), and MongoDB session sync.</p>
+                <a href="#" class="btn-link">View Docs <i class="fas fa-book-open"></i></a>
             </div>
         </div>
-    </div>
 
-    <div class="info-grid">
-        <div class="box">
-            <i class="fas fa-user"></i>
-            <h3>Age</h3>
-            <p>23 Years Old</p>
+        <div class="status-panel">
+            <div class="status-header">
+                <h3><i class="fas fa-satellite-dish" style="color: var(--blood); margin-right: 15px;"></i> LIVE_DIAGNOSTICS</h3>
+                <span style="font-family: 'JetBrains Mono'; font-size: 0.7rem;"><span class="pulse-dot"></span> VAJIRA_MD_LITE_ACTIVE</span>
+            </div>
+            
+            <div class="data-grid">
+                <div class="data-card"><h4>Socket Engine</h4><p>Baileys MD v2.30</p></div>
+                <div class="data-card"><h4>Database</h4><p>MongoDB Linked</p></div>
+                <div class="data-card"><h4>Translation</h4><p>MyMemory SI/EN</p></div>
+                <div class="data-card"><h4>System Uptime</h4><p>99.9% Logic</p></div>
+            </div>
         </div>
-        <div class="box">
-            <i class="fas fa-map-marker-alt"></i>
-            <h3>Location</h3>
-            <p>Nawanaliya, Balangoda</p>
-        </div>
-        <div class="box">
-            <i class="fas fa-globe-asia"></i>
-            <h3>Country</h3>
-            <p>Sri Lanka (70100)</p>
-        </div>
-        <div class="box">
-            <i class="fas fa-briefcase"></i>
-            <h3>Profession</h3>
-            <p>Hotel Receptionist & Developer</p>
-        </div>
-    </div>
 
-    <div class="tech-section">
-        <h2>Technical Core</h2>
-        <div style="background: var(--card-glass); padding: 40px; border-radius: 32px; border: 1px solid var(--border);">
-            <p style="margin-bottom: 10px;">Node.js / Baileys Socket Engine</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
-            
-            <p style="margin-bottom: 10px;">MongoDB / Session Persistence</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 88%;"></div></div>
-            
-            <p style="margin-bottom: 10px;">JavaScript / API Integration (Axios)</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 92%;"></div></div>
-            
-            <p style="margin-bottom: 10px;">System UI / CSS3 Animations</p>
-            <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+        <div class="identity-footer">
+            <div class="owner-capsule">
+                <span>W.M VAJIRA RATHNAYAKA</span>
+                <h3>071 919 9757</h3>
+                <span>BALANGODA, SRI LANKA</span>
+            </div>
         </div>
-    </div>
 
-    <footer style="margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 40px;">
-        <p style="color: #444; font-size: 0.8rem; font-family: 'JetBrains Mono';">
-            &copy; 2026 VAJIRA-MD-ULTRA // POWERED BY TECHNICAL DARK DEVILS
-        </p>
-    </footer>
-</div>
+        <footer>
+            DESIGNED_BY_VAJIRA_RATHNAYAKA // 2026_VAJIRA_MD_LITE
+        </footer>
+    </div>
 
 </body>
 </html>
