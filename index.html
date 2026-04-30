@@ -3,247 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vajira MD | System Intelligence</title>
+    <title>Vajira Rathnayaka | System Architect</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap');
 
         :root {
             --blood-red: #ff003c;
-            --deep-dark: #050002;
-            --glass: rgba(255, 255, 255, 0.03);
-            --neon-glow: 0 0 20px rgba(255, 0, 60, 0.4);
-            --border: rgba(255, 255, 255, 0.08);
+            --dark-bg: #030305;
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.07);
+            --glow: 0 0 25px rgba(255, 0, 60, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            background-color: var(--deep-dark);
+            background-color: var(--dark-bg);
             color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 0, 60, 0.05) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 10% 10%, rgba(255, 0, 60, 0.05) 0%, transparent 50%);
         }
 
-        /* --- BACKGROUND ELEMENTS --- */
-        .aura {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,0,60,0.02) 0%, transparent 100%);
-            z-index: -1;
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+
+        /* --- PROFILE HEADER --- */
+        .profile-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 40px;
+            animation: slideIn 1s ease-out;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
-        /* --- HERO SECTION --- */
-        .hero { text-align: center; margin-bottom: 80px; animation: fadeInUp 1s ease; }
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--blood-red), #550014);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: 800;
+            box-shadow: var(--glow);
+            transform: rotate(-5deg);
+        }
+
+        .profile-info h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
+        .profile-info h1 span { color: var(--blood-red); }
+        .tagline { color: #888; font-family: 'JetBrains Mono'; font-size: 0.9rem; margin-bottom: 20px; display: block; }
+
+        /* --- INFO GRID --- */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .box {
+            background: var(--card-glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .bot-badge {
-            display: inline-block; padding: 8px 20px; border-radius: 100px;
-            background: rgba(255, 0, 60, 0.1); border: 1px solid var(--blood-red);
-            color: var(--blood-red); font-weight: 700; font-size: 0.8rem;
-            letter-spacing: 3px; margin-bottom: 20px; box-shadow: var(--neon-glow);
-        }
-
-        h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 15px; }
-        .accent-text { color: var(--blood-red); text-shadow: var(--neon-glow); }
-        .subtitle { color: rgba(255,255,255,0.5); max-width: 600px; margin: 0 auto; line-height: 1.6; }
-
-        /* --- TECHNICAL STATS GRID --- */
-        .stats-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-            gap: 20px; margin-bottom: 60px; 
-        }
-        .stat-box {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 24px;
-            padding: 30px; text-align: center; backdrop-filter: blur(10px);
-            transition: 0.3s;
-        }
-        .stat-box:hover { border-color: var(--blood-red); transform: translateY(-5px); }
-        .stat-box i { font-size: 2rem; color: var(--blood-red); margin-bottom: 15px; }
-        .stat-box h2 { font-family: 'JetBrains Mono'; font-size: 1.8rem; }
-        .stat-box p { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- CORE FEATURES (FROM INDEX.JS) --- */
-        .details-section { margin-top: 100px; }
-        .section-header { margin-bottom: 40px; border-left: 4px solid var(--blood-red); padding-left: 20px; }
-        .section-header h2 { font-size: 2rem; }
-
-        .features-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; }
-
-        .f-card {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 32px;
-            padding: 40px; position: relative; overflow: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .f-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,0,60,0.3); }
-        .f-card::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--blood-red); opacity: 0; transition: 0.3s;
-        }
-        .f-card:hover::before { opacity: 1; }
-
-        .f-card i { font-size: 1.5rem; color: var(--blood-red); margin-bottom: 25px; display: block; }
-        .f-card h3 { margin-bottom: 12px; font-size: 1.3rem; }
-        .f-card p { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+        .box:hover { border-color: var(--blood-red); transform: translateY(-10px); background: rgba(255, 255, 255, 0.05); }
         
-        .code-tag {
-            font-family: 'JetBrains Mono'; font-size: 0.75rem; background: #000;
-            padding: 4px 10px; border-radius: 6px; color: var(--blood-red); border: 1px solid #222;
-        }
+        .box i { color: var(--blood-red); font-size: 1.5rem; margin-bottom: 20px; display: block; }
+        .box h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #666; margin-bottom: 10px; }
+        .box p { font-size: 1.1rem; font-weight: 600; color: #eee; }
 
-        /* --- SYSTEM SPECS --- */
-        .specs-panel {
-            background: #000; border: 1px solid var(--border); border-radius: 24px;
-            padding: 40px; margin-top: 60px; display: flex; flex-wrap: wrap; gap: 40px;
-        }
-        .spec-item { flex: 1; min-width: 200px; }
-        .spec-item h4 { color: #666; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; }
-        .spec-item ul { list-style: none; }
-        .spec-item li { margin-bottom: 8px; font-size: 0.9rem; color: #ccc; display: flex; align-items: center; gap: 10px; }
-        .spec-item li i { color: var(--blood-red); font-size: 0.7rem; }
+        /* --- TECHNICAL EXPERTISE (Linked to index.js) --- */
+        .tech-section { margin-top: 60px; }
+        .tech-section h2 { margin-bottom: 30px; font-size: 1.8rem; border-left: 4px solid var(--blood-red); padding-left: 20px; }
 
-        /* --- CTA FOOTER --- */
-        .cta-footer { 
-            text-align: center; margin-top: 100px; padding: 60px;
-            background: linear-gradient(to top, rgba(255,0,60,0.05), transparent);
-            border-radius: 50px;
+        .skill-bar {
+            background: rgba(255,255,255,0.05); border-radius: 50px; height: 12px; margin-bottom: 25px; position: relative; overflow: hidden;
         }
-        .btn-main {
-            background: var(--blood-red); color: #fff; border: none; padding: 18px 45px;
-            border-radius: 18px; font-weight: 800; font-size: 1rem; cursor: pointer;
-            transition: 0.3s; box-shadow: var(--neon-glow); text-decoration: none;
-            display: inline-block;
-        }
-        .btn-main:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .skill-progress { height: 100%; background: var(--blood-red); box-shadow: var(--glow); border-radius: 50px; }
 
+        /* --- CONTACT LINKS --- */
+        .contact-row { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .c-btn {
+            text-decoration: none; padding: 12px 25px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 10px; transition: 0.3s; border: 1px solid var(--border); color: #fff;
+        }
+        .c-btn.wa { background: #25d36622; border-color: #25d366; color: #25d366; }
+        .c-btn.email { background: #ff003c22; border-color: var(--blood-red); color: var(--blood-red); }
+        .c-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); filter: brightness(1.2); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-card { flex-direction: column; text-align: center; padding: 30px; }
+            .profile-img { width: 150px; height: 150px; font-size: 3rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="aura"></div>
-
-    <div class="container">
-        <header class="hero">
-            <div class="bot-badge">VAJIRA MD CORE</div>
-            <h1>The Next Gen <span class="accent-text">WhatsApp AI</span></h1>
-            <p class="subtitle">A multi-device automation engine built on Baileys, featuring high-speed MongoDB synchronization and advanced security protocols.</p>
-        </header>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <i class="fas fa-bolt"></i>
-                <h2>2.4ms</h2>
-                <p>Response Latency</p>
-            </div>
-            <div class="stat-box">
-                <i class="fas fa-database"></i>
-                <h2>∞</h2>
-                <p>MongoDB Linked</p>
-            </div>
-            <div class="stat-box">
-                <i class="fas fa-shield-virus"></i>
-                <h2>100%</h2>
-                <p>Encrypted Core</p>
-            </div>
-            <div class="stat-box">
-                <i class="fas fa-code-branch"></i>
-                <h2>v3.0.1</h2>
-                <p>System Build</p>
-            </div>
-        </div>
-
-        <div class="details-section">
-            <div class="section-header">
-                <h2>Intelligence Modules</h2>
-            </div>
-            
-            <div class="features-matrix">
-                <div class="f-card">
-                    <i class="fas fa-history"></i>
-                    <h3>Anti-Delete Engine</h3>
-                    <p>Powered by a specialized <code>messageStore</code> Map. It intercepts the <code>messages.update</code> socket event to recover deleted content instantly.</p>
-                    <span class="code-tag">handleAntiDelete()</span>
-                </div>
-
-                <div class="f-card">
-                    <i class="fas fa-globe"></i>
-                    <h3>MyMemory Translator</h3>
-                    <p>Real-time stream translation using Axios. Automatically converts any language to your configured target (SI/EN).</p>
-                    <span class="code-tag">AUTO_TRANSLATE_LOGIC</span>
-                </div>
-
-                <div class="f-card">
-                    <i class="fas fa-heart"></i>
-                    <h3>Newsletter Automation</h3>
-                    <p>Scans authorized JIDs and applies randomized permanent emoji reactions to all incoming newsletter broadcasts.</p>
-                    <span class="code-tag">setupNewsletterHandlers()</span>
-                </div>
-
-                <div class="f-card">
-                    <i class="fas fa-phone-slash"></i>
-                    <h3>Call Interceptor</h3>
-                    <p>Strict monitoring of the <code>call</code> event. Automatically triggers <code>socket.rejectCall()</code> and logs the caller's ID.</p>
-                    <span class="code-tag">ANTI_CALL_REJECT</span>
-                </div>
-
-                <div class="f-card">
-                    <i class="fas fa-eye"></i>
-                    <h3>Status Nexus</h3>
-                    <p>Handles <code>status@broadcast</code> updates. Features auto-viewing and multi-emoji auto-liking for all saved contacts.</p>
-                    <span class="code-tag">AUTO_VIEW_STATUS</span>
-                </div>
-
-                <div class="f-card">
-                    <i class="fas fa-sync"></i>
-                    <h3>Multi-Session Sync</h3>
-                    <p>Synchronizes <code>EmpirePair</code> sessions via MongoDB, allowing for automated reconnection on server restarts.</p>
-                    <span class="code-tag">initMongo()</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="specs-panel">
-            <div class="spec-item">
-                <h4>Core Dependencies</h4>
-                <ul>
-                    <li><i class="fas fa-check"></i> Baileys v2.30+</li>
-                    <li><i class="fas fa-check"></i> Node.js Runtime</li>
-                    <li><i class="fas fa-check"></i> Express API</li>
-                </ul>
-            </div>
-            <div class="spec-item">
-                <h4>Media Processors</h4>
-                <ul>
-                    <li><i class="fas fa-check"></i> FFmpeg / Jimp</li>
-                    <li><i class="fas fa-check"></i> YT-Search API</li>
-                    <li><i class="fas fa-check"></i> FileType Sniffer</li>
-                </ul>
-            </div>
-            <div class="spec-item">
-                <h4>Security</h4>
-                <ul>
-                    <li><i class="fas fa-check"></i> AES-256 Auth</li>
-                    <li><i class="fas fa-check"></i> OTP Store Logic</li>
-                    <li><i class="fas fa-check"></i> PII Scrubber</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="cta-footer">
-            <h2>Ready to Deploy?</h2>
-            <p style="margin-bottom: 30px; color: #666;">Experience the ultimate bot logic designed for speed.</p>
-            <a href="#" class="btn-main">INITIALIZE SYSTEM</a>
-            <div style="margin-top: 30px; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #333;">
-                &copy; 2026 TECHNICAL DARK DEVILS | VAJIRA RATHNAYAMA
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-img">W</div>
+        <div class="profile-info">
+            <span class="tagline">SYSTEM_ARCHITECT_INITIALIZED</span>
+            <h1>W.M <span>Vajira Rathnayaka</span></h1>
+            <p style="color: #aaa; line-height: 1.6; max-width: 500px;">
+                Lead Developer at Technical Dark Devils. Specialized in Node.js automation, Baileys framework, and MongoDB cloud synchronization.
+            </p>
+            <div class="contact-row">
+                <a href="https://wa.me/94719199757" class="c-btn wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="mailto:vajirarathnayaka529@gmail.com" class="c-btn email"><i class="far fa-envelope"></i> Email Me</a>
             </div>
         </div>
     </div>
+
+    <div class="info-grid">
+        <div class="box">
+            <i class="fas fa-user"></i>
+            <h3>Age</h3>
+            <p>23 Years Old</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Location</h3>
+            <p>Nawanaliya, Balangoda</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-globe-asia"></i>
+            <h3>Country</h3>
+            <p>Sri Lanka (70100)</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-briefcase"></i>
+            <h3>Profession</h3>
+            <p>Hotel Receptionist & Developer</p>
+        </div>
+    </div>
+
+    <div class="tech-section">
+        <h2>Technical Core</h2>
+        <div style="background: var(--card-glass); padding: 40px; border-radius: 32px; border: 1px solid var(--border);">
+            <p style="margin-bottom: 10px;">Node.js / Baileys Socket Engine</p>
+            <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
+            
+            <p style="margin-bottom: 10px;">MongoDB / Session Persistence</p>
+            <div class="skill-bar"><div class="skill-progress" style="width: 88%;"></div></div>
+            
+            <p style="margin-bottom: 10px;">JavaScript / API Integration (Axios)</p>
+            <div class="skill-bar"><div class="skill-progress" style="width: 92%;"></div></div>
+            
+            <p style="margin-bottom: 10px;">System UI / CSS3 Animations</p>
+            <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+        </div>
+    </div>
+
+    <footer style="margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 40px;">
+        <p style="color: #444; font-size: 0.8rem; font-family: 'JetBrains Mono';">
+            &copy; 2026 VAJIRA-MD-ULTRA // POWERED BY TECHNICAL DARK DEVILS
+        </p>
+    </footer>
+</div>
 
 </body>
 </html>
