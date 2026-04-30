@@ -3,1568 +3,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VAJIRA MD LITE</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <title>Bot Manager Pro | Crimson Edition</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root {
+            --primary: #ff0000; /* Blood Red */
+            --primary-glow: rgba(255, 0, 0, 0.4);
+            --accent: #8b0000; /* Darker Red */
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(30, 10, 10, 0.9);
+            --text-main: #f5f5f5;
+            --text-dim: #b0a4a4;
+            --input-bg: #251a1a;
+            --card-border: rgba(255, 0, 0, 0.2);
         }
 
-        body {
-            background: radial-gradient(circle at center, #1a0000 0%, #050000 70%, #000 100%);
-            color: #fff;
+        /* Float Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at center, #200505 0%, #0a0a0a 100%);
+            color: var(--text-main);
+            margin: 0;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            padding: 20px;
             overflow-x: hidden;
         }
 
-
-
-
-.system-dashboard {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 0, 0, 0.2);
-    border-radius: 15px;
-    padding: 15px;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 450px;
-}
-
-.monitor-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 0, 0, 0.1);
-}
-
-.header-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: #ff0000;
-}
-
-.pulse-icon {
-    width: 6px;
-    height: 6px;
-    background: #ff0000;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #ff0000;
-    animation: blink 1.5s infinite;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.stat-card {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.stat-card.wide {
-    grid-column: span 2;
-    flex-direction: row;
-    align-items: center;
-}
-
-.card-icon {
-    color: #ff0000;
-    font-size: 14px;
-    opacity: 0.8;
-}
-
-.card-data {
-    display: flex;
-    flex-direction: column;
-}
-
-.label {
-    font-size: 8px;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.mini-bar-bg {
-    width: 100%;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 2px;
-    margin-top: 4px;
-}
-
-.mini-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: #ff0000;
-    box-shadow: 0 0 8px #ff0000;
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes blink {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
-}
-
-.monospace { font-size: 16px !important; letter-spacing: 1px; }
-
-
-
-        
-
-        
-
-
-/* --- FLOATING SETTINGS BUTTON --- */
-.floating-settings {
-    position: fixed;
-    bottom: 100px; /* Positioned above the WhatsApp button */
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background: rgba(15, 0, 0, 0.9);
-    color: #ff0000;
-    border: 1px solid rgba(255, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
-    z-index: 1000;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-/* THE PERMANENT LABEL */
-.settings-label {
-    position: absolute;
-    right: 75px; /* Sits in front of the button */
-    background: rgba(255, 0, 0, 0.1);
-    color: #ff0000;
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-size: 10px;
-    font-family: 'Orbitron', sans-serif; /* Matches your high-end UI theme */
-    white-space: nowrap;
-    border: 1px solid rgba(255, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
-    letter-spacing: 1px;
-}
-
-.floating-settings:hover {
-    transform: scale(1.1);
-    background: #ff0000;
-    color: #000;
-    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
-}
-
-/* Hover effect for the label */
-.floating-settings:hover .settings-label {
-    background: #ff0000;
-    color: #000;
-    font-weight: bold;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 600px) {
-    .floating-settings {
-        bottom: 85px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
-    }
-    .settings-label {
-        right: 65px;
-        font-size: 9px;
-    }
-}
-
-        
-        
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -280px; 
-    width: 280px;
-    height: 100%;
-    background: rgba(10, 0, 0, 0.95);
-    backdrop-filter: blur(15px);
-    border-right: 1px solid rgba(255, 0, 0, 0.3);
-    z-index: 2000;
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    padding: 20px;
-}
-
-.sidebar.active {
-    left: 0;
-}
-
-
-
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    color: #ff0000;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 0, 0, 0.1);
-    margin-bottom: 25px;
-}
-
-.side-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    color: #ccc;
-    text-decoration: none;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.side-btn:hover {
-    background: rgba(255, 0, 0, 0.1);
-    border-color: #ff0000;
-    color: #fff;
-}
-
-.side-btn i { color: #ff0000; font-size: 16px; }
-
-/* MENU TOGGLE BUTTON */
-.menu-toggle {
-    position: fixed;
-    top: 20px;           /* Distance from top */
-    left: 50%;           /* Move to horizontal center */
-    transform: translateX(-50%); /* Offset by half its width to center perfectly */
-    z-index: 3000;       /* Keep it above all other elements */
-    background: rgba(255, 0, 0, 0.1); /* Optional: slight background glow */
-    border: 1px solid rgba(255, 0, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 50px;
-    color: #ff0000;
-    font-size: 20px;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    transition: 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.menu-toggle:hover {
-    background: #ff0000;
-    color: #000;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-}
-
-/* Add a label next to the bars icon for a better look */
-.menu-toggle::after {
-    content: "MENU";
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-}
-
-
-
-
-/* --- LIVE NEWS TICKER --- */
-.news-ticker-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    background: rgba(15, 0, 0, 0.9);
-    border: 1px solid rgba(255, 0, 0, 0.5);
-    border-radius: 10px;
-    display: flex;
-    overflow: hidden;
-    height: 40px;
-    align-items: center;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
-}
-
-.ticker-title {
-    background: #ff0000;
-    color: #000;
-    padding: 0 15px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    font-weight: bold;
-    white-space: nowrap;
-    z-index: 2;
-}
-
-.ticker-wrap {
-    flex: 1;
-    overflow: hidden;
-}
-
-.ticker-move {
-    display: flex;
-    white-space: nowrap;
-    animation: ticker 25s linear infinite;
-}
-
-.ticker-item {
-    padding: 0 30px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: #fff;
-    border-right: 1px solid rgba(255, 0, 0, 0.2);
-}
-
-@keyframes ticker {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-
-.ticker-wrap:hover .ticker-move {
-    animation-play-state: paused;
-}
-        
-
-
-/* --- FLOATING CHAT BUTTON --- */
-.floating-chat {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background: #25d366; /* WhatsApp Green */
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
-    z-index: 1000;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    animation: chatPulse 2s infinite;
-}
-
-.floating-chat:hover {
-    transform: scale(1.1) rotate(10deg);
-    background: #128c7e;
-    box-shadow: 0 0 30px rgba(37, 211, 102, 0.8);
-}
-
-/* Pulse Animation */
-@keyframes chatPulse {
-    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-}
-
-/* Tooltip Text */
-.chat-tooltip {
-    position: absolute;
-    right: 75px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-size: 10px;
-    font-family: 'Orbitron', sans-serif;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    border: 1px solid #25d366;
-}
-
-.floating-chat:hover .chat-tooltip {
-    opacity: 1;
-    visibility: visible;
-    right: 85px;
-}
-
-/* Mobile Responsive */
-@media (max-width: 600px) {
-    .floating-chat {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        font-size: 25px;
-    }
-}
-
-
-
-        
-/* --- FIXED FULL-SCREEN WIND FLOW --- */
-.wind-container {
-    position: fixed;
-    inset: 0; /* Pins to top, bottom, left, and right */
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: -1; /* Ensures it stays behind your pairing box */
-    overflow: hidden;
-}
-
-.wind-line {
-    position: absolute;
-    height: 1.5px; /* Slightly thicker for better visibility */
-    background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.5), transparent);
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-    border-radius: 100px;
-    animation: windFlow linear infinite;
-}
-
-@keyframes windFlow {
-    0% {
-        transform: translateX(-150%) translateY(0);
-        opacity: 0;
-    }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% {
-        transform: translateX(150vw) translateY(30px); /* Move past the right edge */
-        opacity: 0;
-    }
-}
-
-
-        
-
-/* --- BOT INFO SECTION --- */
-.bot-info-container {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin: 40px auto;
-    padding: 0 15px;
-    justify-content: center;
-}
-
-.bot-info-card {
-    flex: 1;
-    min-width: 300px;
-    background: rgba(15, 0, 0, 0.8);
-    border: 1px solid rgba(255, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 25px;
-    text-align: left;
-    transition: 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.bot-info-card:hover {
-    border-color: #ff0000;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
-    transform: translateY(-5px);
-}
-
-.bot-info-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    color: #ff0000;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.bot-info-card p {
-    font-size: 12px;
-    color: #ccc;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-.bot-stats {
-    display: flex;
-    gap: 15px;
-}
-
-.bot-stats span {
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    color: #ff0000;
-    background: rgba(255, 0, 0, 0.1);
-    padding: 4px 10px;
-    border-radius: 5px;
-}
-
-.lite-tag {
-    position: absolute;
-    top: 15px;
-    right: -30px;
-    background: #ff0000;
-    color: #000;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 5px 35px;
-    transform: rotate(45deg);
-}
-
-@media (max-width: 600px) {
-    .bot-info-container {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-        
-
-
-/* --- TAB SWITCHER --- */
-.tab-switcher {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    background: rgba(0,0,0,0.5);
-    padding: 5px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,0,0,0.2);
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 8px;
-    background: transparent;
-    color: #888;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.tab-btn.active {
-    background: #ff0000;
-    color: #000;
-    box-shadow: 0 0 10px rgba(255,0,0,0.3);
-}
-
-.ui-title {
-    font-family: 'Orbitron'; 
-    color: #ff0000; 
-    margin-bottom: 15px; 
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-}
-
-/* --- QR BOX STYLING --- */
-.qr-box {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    border: 3px solid #ff0000;
-    overflow: hidden;
-}
-
-.qr-box img {
-    width: 100%;
-    height: 100%;
-}
-
-.qr-scan-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #ff0000;
-    box-shadow: 0 0 15px #ff0000;
-    animation: qrScan 2s infinite linear;
-}
-
-@keyframes qrScan {
-    0% { top: 0%; }
-    100% { top: 100%; }
-}
-
-
-        
-
-
-/* --- TOP NAVIGATION BAR (AFTER HEADER) --- */
-.info-button-bar {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 25px; /* Space before the pairing box */
-    animation: fadeDown 0.8s ease;
-}
-
-@keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.info-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: rgba(15, 0, 0, 0.8);
-    border: 1px solid rgba(255, 0, 0, 0.3);
-    padding: 10px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #fff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-}
-
-.info-btn i {
-    color: #ff0000;
-    font-size: 14px;
-}
-
-.info-btn:hover {
-    background: #ff0000;
-    color: #000;
-    border-color: #ff0000;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-    transform: translateY(-2px);
-}
-
-.info-btn:hover i {
-    color: #000;
-}
-
-/* Subtle breathing animation */
-.info-btn {
-    animation: neonBorder 2s infinite alternate;
-}
-
-@keyframes neonBorder {
-    from { border-color: rgba(255, 0, 0, 0.2); }
-    to { border-color: rgba(255, 0, 0, 0.6); }
-}
-
-
-
-
-
-
-        
-
-        /* --- HEADER --- */
-        header {
+        .card { 
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 28px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px var(--primary-glow);
             width: 100%;
-            padding: 15px 20px;
-            background: rgba(10, 0, 0, 0.9);
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 0, 0, 0.3);
+            animation: fadeIn 0.6s ease-out, float 6s ease-in-out infinite;
+        }
+
+        .hidden { display: none; }
+        
+        h2 { 
+            font-size: 28px; 
+            margin-bottom: 8px; 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        h3 { 
+            font-size: 14px; 
+            color: var(--primary); 
+            margin: 25px 0 15px 0; 
+            text-align: left; 
+            text-transform: uppercase;
+            border-left: 3px solid var(--primary);
+            padding-left: 10px;
+            letter-spacing: 1px;
+        }
+
+        p { font-size: 14px; color: var(--text-dim); margin-bottom: 25px; }
+
+        /* Input Styles */
+        .phone-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .phone-input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        input[type="text"], select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+        }
+
+        /* Styled Dropdowns */
+        select {
+            background-color: var(--input-bg) !important;
+            color: var(--text-main) !important;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            appearance: none;
+            border: 1px solid rgba(255, 0, 0, 0.2) !important;
+        }
+
+        select option {
+            background-color: #1a0505;
+            color: white;
+        }
+
+        .setting-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        .label-text { 
+            font-size: 10px; 
+            color: var(--primary); 
+            display: block; 
+            margin-bottom: 6px; 
+            font-weight: bold;
+            text-transform: uppercase; 
+        }
+
+        /* Switches */
+        .toggle-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 12px 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            color: #ff0000;
-            font-size: 1.1rem;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333; transition: .3s; border-radius: 20px;
         }
-
-        .status-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #aaa;
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px;
+            left: 3px; bottom: 3px; background-color: #777; transition: .3s; border-radius: 50%;
         }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(22px); background-color: white; }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #00ff00;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00ff00;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* --- PARTICLES --- */
-        .particles span {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: #ff0000;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
-            animation: float 6s linear infinite;
-            z-index: 1;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 0 }
-            20% { opacity: 1; transform: scale(1) }
-            100% { transform: translateY(-10vh) scale(0.5); opacity: 0 }
-        }
-
-        /* --- MAIN CONTENT --- */
-        .main-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 15px;
-            position: relative;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px;
-            z-index: 10;
-        }
-
-        .box {
-            position: relative;
-            background: rgba(10, 0, 0, 0.85);
-            border: 1px solid rgba(255, 0, 0, 0.4);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 70px 20px 30px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
-            animation: fade 1s ease;
-            width: 100%;
-        }
-
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(40px) }
-            to { opacity: 1; transform: translateY(0) }
-        }
-
-        .avatar {
-            position: absolute;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #ff0000;
-            box-shadow: 0 0 25px #ff0000;
-        }
-
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- INPUT GROUP --- */
-        .input-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 15px;
-            width: 100%;
-        }
-
-        select {
-            width: 100px;
-            min-width: 90px;
-            background: #0a0000;
-            color: #fff;
-            border: 1px solid #440000;
-            border-radius: 10px;
-            padding: 10px 5px;
-            outline: none;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        input#number {
-            flex: 1;
-            width: 0;
-            min-width: 100px;
-            background: #0a0000;
-            color: #fff;
-            border: 1px solid #440000;
-            border-radius: 10px;
-            padding: 12px;
-            outline: none;
-            text-align: center;
-        }
-
-        input:focus, select:focus {
-            border-color: #ff0000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-        }
-
-        /* --- PAIR CODE BOX --- */
-/* --- PAIR CODE BOX --- */
-        #pair {
-            margin-top: 20px;
-            padding: 15px;
-            min-height: 70px;
-            background: rgba(255, 0, 0, 0.05);
-            border: 2px solid #ff0000;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            color: #fff;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.2);
-            animation: pulseBorder 2s infinite;
-        }
-
-        @keyframes pulseBorder {
-            0%, 100% { border-color: rgba(255, 0, 0, 0.4); }
-            50% { border-color: rgba(255, 0, 0, 1); box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); }
-        }
-
-        .copy-btn {
-            position: absolute;
-            right: 8px;
-            background: rgba(255, 0, 0, 0.2);
-            border: 1px solid #ff0000;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.3s;
-            z-index: 15;
-        }
-
-        .copy-btn:hover { background: #ff0000; color: #000; }
-
-        button.main-btn {
-            width: 100%;
-            margin-top: 15px;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
+        /* Buttons */
+        button {
+            width: 100%; padding: 16px; 
             background: linear-gradient(45deg, #8b0000, #ff0000);
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
+            border: none; color: white; font-weight: 800; font-size: 15px;
+            border-radius: 12px; cursor: pointer; margin-top: 15px; 
+            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
         }
 
-        .actions { display: flex; gap: 10px; margin-top: 15px; }
-        .actions button {
-            flex: 1;
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+            filter: brightness(1.2);
+        }
+
+        .btn-lock { 
+            background: transparent; 
+            color: var(--text-dim); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            font-size: 12px; 
+            margin-top: 15px; 
+            box-shadow: none;
+        }
+
+        .btn-lock:hover {
+            color: var(--primary);
+            border-color: var(--primary);
             background: transparent;
-            border: 1px solid #ff0000;
-            color: #ff0000;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
         }
 
-      
-
-
-        /* --- FOOTER --- */
-        footer {
-            width: 100%;
-            padding: 20px;
-            background: rgba(5, 0, 0, 0.95);
-            border-top: 1px solid rgba(255, 0, 0, 0.2);
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-        }
-
-        .footer-links {
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .footer-links a { color: #ff0000; text-decoration: none; transition: 0.3s; }
-        .footer-links a:hover { color: #fff; text-shadow: 0 0 5px #ff0000; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
     </style>
 </head>
-
 <body>
 
-
-<div id="sidebar" class="sidebar">
-    <div class="sidebar-header">
-        <i class="fas fa-user-ninja"></i>
-        <span>NINJA X MENU</span>
-    </div>
-    
-    <div class="sidebar-links">
-        <button class="side-btn user-info-trigger" onclick="toggleUserInfo()">
-            <i class="fas fa-id-card"></i> USER INFO
-        </button>
-        <a href="https://github.com/webscrape2003" class="side-btn"><i class="fab fa-github"></i> REPOSITORY</a>
-        <a href="#" class="side-btn"><i class="fas fa-terminal"></i> COMMANDS</a>
-        <a href="#" class="side-btn"><i class="fas fa-life-ring"></i> SUPPORT</a>
-        <a href="setting.html" class="side-btn"><i class="fas fa-tools"></i> USER SETTINGS</a>
-    </div>
-</div>
-
-<button id="menuBtn" class="menu-toggle" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
-
-<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-
-    
-
-
-    
-<div class="wind-container" id="windContainer"></div>    
-
-    <header>
-        <div class="logo"><i class="fas fa-user-ninja"></i> VAJIRA MD LITE</div>
-        <div class="status-box">
-            <div class="status-dot"></div>
-            SERVER ONLINE
-        </div>
-    </header>
-
-   
-    <div class="particles" id="particles"></div>
-
-    <main class="main-wrapper">
-
-
-    <div class="info-button-bar">
-        <a href="setting.html" class="info-btn">
-            <i class="fas fa-tools"></i>
-            <span>USER SETTINGS</span>
-        </a>
-        <a href="#" class="info-btn">
-            <i class="fas fa-robot"></i>
-            <span>BOT INFO</span>
-        </a>
-        <a href="#" class="info-btn">
-            <i class="fas fa-shield-alt"></i>
-            <span>PRIVACY</span>
-        </a>
-        <a href="#" class="info-btn">
-            <i class="fas fa-user-shield"></i>
-            <span>OWNER</span>
-        </a>
-    </div>
-
+    <!-- UNLOCK CARD -->
+    <div class="card" id="unlock-card">
+        <h2>Crimson Core</h2>
+        <p>Access the control interface by providing your linked number.</p>
         
-<div class="news-ticker-container">
-    <div class="ticker-title">LIVE BOT FEED</div>
-    <div class="ticker-wrap">
-        <div class="ticker-move">
-            <div class="ticker-item">Vajira MD: New Exploit Patched...</div>
-            <div class="ticker-item">News Scraper: Sri Lanka Daily News Updated...</div>
-            <div class="ticker-item">System: 1,240 active sessions globally...</div>
-            <div class="ticker-item">Dev Note: V2.0.5 coming next week...</div>
-            <div class="ticker-item">Security: MongoDB encryption stable...</div>
+        <div class="phone-input-wrapper">
+            <span style="color:var(--primary); font-weight:bold; margin-right:10px;">+</span>
+            <input type="text" id="token-input" placeholder="947XXXXXXXXX">
         </div>
-    </div>
-</div>
-        
-        
-        <div class="container">
-            <div class="box">
 
-
-<div class="tab-switcher">
-        <button id="showPair" class="tab-btn active">
-            <i class="fas fa-keyboard"></i> PAIR CODE
-        </button>
-        <button id="showQR" class="tab-btn">
-            <i class="fas fa-qrcode"></i> QR CODE
-        </button>
-    </div>
-
-
-                
-                <div id="pairUI">
-                    <h2 style="font-family: 'Orbitron'; color: #ff0000; margin-bottom: 15px; font-size: 1.2rem;">PAIRING SYSTEM</h2>
-                    <div class="input-group">
-                        <select id="cc">
-                            <option value="94">🇱🇰 +94</option>         
-                            <option value="93">🇦🇫 +93</option>
-                            <option value="355">🇦🇱 +355</option>
-                            <option value="213">🇩🇿 +213</option>
-                            <option value="376">🇦🇩 +376</option>
-                            <option value="244">🇦🇴 +244</option>
-                            <option value="1264">🇦🇮 +1-264</option>
-                            <option value="1268">🇦🇬 +1-268</option>
-                            <option value="54">🇦🇷 +54</option>
-                            <option value="374">🇦🇲 +374</option>
-                            <option value="297">🇦🇼 +297</option>
-                            <option value="61">🇦🇺 +61</option>
-                            <option value="43">🇦🇹 +43</option>
-                            <option value="994">🇦🇿 +994</option>
-                            <option value="1242">🇧🇸 +1-242</option>
-                            <option value="973">🇧🇭 +973</option>
-                            <option value="880">🇧🇩 +880</option>
-                            <option value="1246">🇧🇧 +1-246</option>
-                            <option value="375">🇧🇾 +375</option>
-                            <option value="32">🇧🇪 +32</option>
-                            <option value="501">🇧🇿 +501</option>
-                            <option value="229">🇧🇯 +229</option>
-                            <option value="1441">🇧🇲 +1-441</option>
-                            <option value="975">🇧🇹 +975</option>
-                            <option value="591">🇧🇴 +591</option>
-                            <option value="387">🇧🇦 +387</option>
-                            <option value="267">🇧🇼 +267</option>
-                            <option value="55">🇧🇷 +55</option>
-                            <option value="673">🇧🇳 +673</option>
-                            <option value="359">🇧🇬 +359</option>
-                            <option value="226">🇧🇫 +226</option>
-                            <option value="257">🇧🇮 +257</option>
-                            <option value="855">🇰🇭 +855</option>
-                            <option value="237">🇨🇲 +237</option>
-                            <option value="1">🇨🇦 +1</option>
-                            <option value="238">🇨🇻 +238</option>
-                            <option value="1345">🇰🇾 +1-345</option>
-                            <option value="236">🇨🇫 +236</option>
-                            <option value="235">🇹🇩 +235</option>
-                            <option value="56">🇨🇱 +56</option>
-                            <option value="86">🇨🇳 +86</option>
-                            <option value="57">🇨🇴 +57</option>
-                            <option value="269">🇰🇲 +269</option>
-                            <option value="242">🇨🇬 +242</option>
-                            <option value="243">🇨🇩 +243</option>
-                            <option value="682">🇨🇰 +682</option>
-                            <option value="506">🇨🇷 +506</option>
-                            <option value="385">🇭🇷 +385</option>
-                            <option value="53">🇨🇺 +53</option>
-                            <option value="357">🇨🇾 +357</option>
-                            <option value="420">🇨🇿 +420</option>
-                            <option value="45">🇩🇰 +45</option>
-                            <option value="253">🇩🇯 +253</option>
-                            <option value="1767">🇩🇲 +1-767</option>
-                            <option value="1809">🇩🇴 +1-809</option>
-                            <option value="593">🇪🇨 +593</option>
-                            <option value="20">🇪🇬 +20</option>
-                            <option value="503">🇸🇻 +503</option>
-                            <option value="240">🇬🇶 +240</option>
-                            <option value="291">🇪🇷 +291</option>
-                            <option value="372">🇪🇪 +372</option>
-                            <option value="251">🇪🇹 +251</option>
-                            <option value="500">🇫🇰 +500</option>
-                            <option value="298">🇫🇴 +298</option>
-                            <option value="679">🇫🇯 +679</option>
-                            <option value="358">🇫🇮 +358</option>
-                            <option value="33">🇫🇷 +33</option>
-                            <option value="594">🇬🇫 +594</option>
-                            <option value="689">🇵🇫 +689</option>
-                            <option value="241">🇬🇦 +241</option>
-                            <option value="220">🇬🇲 +220</option>
-                            <option value="995">🇬🇪 +995</option>
-                            <option value="49">🇩🇪 +49</option>
-                            <option value="233">🇬🇭 +233</option>
-                            <option value="350">🇬🇮 +350</option>
-                            <option value="30">🇬🇷 +30</option>
-                            <option value="299">🇬🇱 +299</option>
-                            <option value="1473">🇬🇩 +1-473</option>
-                            <option value="590">🇬🇵 +590</option>
-                            <option value="1671">🇬🇺 +1-671</option>
-                            <option value="502">🇬🇹 +502</option>
-                            <option value="224">🇬🇳 +224</option>
-                            <option value="245">🇬🇼 +245</option>
-                            <option value="592">🇬🇾 +592</option>
-                            <option value="509">🇭🇹 +509</option>
-                            <option value="504">🇭🇳 +504</option>
-                            <option value="852">🇭🇰 +852</option>
-                            <option value="36">🇭🇺 +36</option>
-                            <option value="354">🇮🇸 +354</option>
-                            <option value="91">🇮🇳 +91</option>
-                            <option value="62">🇮🇩 +62</option>
-                            <option value="98">🇮🇷 +98</option>
-                            <option value="964">🇮🇶 +964</option>
-                            <option value="353">🇮🇪 +353</option>
-                            <option value="972">🇮🇱 +972</option>
-                            <option value="39">🇮🇹 +39</option>
-                            <option value="1876">🇯🇲 +1-876</option>
-                            <option value="81">🇯🇵 +81</option>
-                            <option value="962">🇯🇴 +962</option>
-                            <option value="7">🇰🇿 +7</option>
-                            <option value="254">🇰🇪 +254</option>
-                            <option value="686">🇰🇮 +686</option>
-                            <option value="850">🇰🇵 +850</option>
-                            <option value="82">🇰🇷 +82</option>
-                            <option value="965">🇰🇼 +965</option>
-                            <option value="996">🇰🇬 +996</option>
-                            <option value="856">🇱🇦 +856</option>
-                            <option value="371">🇱🇻 +371</option>
-                            <option value="961">🇱🇧 +961</option>
-                            <option value="266">🇱🇸 +266</option>
-                            <option value="231">🇱🇷 +231</option>
-                            <option value="218">🇱🇾 +218</option>
-                            <option value="423">🇱🇮 +423</option>
-                            <option value="370">🇱🇹 +370</option>
-                            <option value="352">🇱🇺 +352</option>
-                            <option value="853">🇲🇴 +853</option>
-                            <option value="389">🇲🇰 +389</option>
-                            <option value="261">🇲🇬 +261</option>
-                            <option value="265">🇲🇼 +265</option>
-                            <option value="60">🇲🇾 +60</option>
-                            <option value="960">🇲🇻 +960</option>
-                            <option value="223">🇲🇱 +223</option>
-                            <option value="356">🇲🇹 +356</option>
-                            <option value="692">🇲🇭 +692</option>
-                            <option value="596">🇲🇶 +596</option>
-                            <option value="222">🇲🇷 +222</option>
-                            <option value="230">🇲🇺 +230</option>
-                            <option value="262">🇾🇹 +262</option>
-                            <option value="52">🇲🇽 +52</option>
-                            <option value="691">🇫🇲 +691</option>
-                            <option value="373">🇲🇩 +373</option>
-                            <option value="377">🇲🇨 +377</option>
-                            <option value="976">🇲🇳 +976</option>
-                            <option value="382">🇲🇪 +382</option>
-                            <option value="1664">🇲🇸 +1-664</option>
-                            <option value="212">🇲🇦 +212</option>
-                            <option value="258">🇲🇿 +258</option>
-                            <option value="95">🇲🇲 +95</option>
-                            <option value="264">🇳🇦 +264</option>
-                            <option value="674">🇳🇷 +674</option>
-                            <option value="977">🇳🇵 +977</option>
-                            <option value="31">🇳🇱 +31</option>
-                            <option value="687">🇳🇨 +687</option>
-                            <option value="64">🇳🇿 +64</option>
-                            <option value="505">🇳🇮 +505</option>
-                            <option value="227">🇳🇪 +227</option>
-                            <option value="234">🇳🇬 +234</option>
-                            <option value="683">🇳🇺 +683</option>
-                            <option value="672">🇳🇫 +672</option>
-                            <option value="1670">🇲🇵 +1-670</option>
-                            <option value="47">🇳🇴 +47</option>
-                            <option value="968">🇴🇲 +968</option>
-                            <option value="92">🇵🇰 +92</option>
-                            <option value="680">🇵🇼 +680</option>
-                            <option value="970">🇵🇸 +970</option>
-                            <option value="507">🇵🇦 +507</option>
-                            <option value="675">🇵🇬 +675</option>
-                            <option value="595">🇵🇾 +595</option>
-                            <option value="51">🇵🇪 +51</option>
-                            <option value="63">🇵🇭 +63</option>
-                            <option value="48">🇵🇱 +48</option>
-                            <option value="351">🇵🇹 +351</option>
-                            <option value="1787">🇵🇷 +1-787</option>
-                            <option value="974">🇶🇦 +974</option>
-                            <option value="262">🇷🇪 +262</option>
-                            <option value="40">🇷🇴 +40</option>
-                            <option value="7">🇷🇺 +7</option>
-                            <option value="250">🇷🇼 +250</option>
-                            <option value="290">🇸🇭 +290</option>
-                            <option value="1869">🇰🇳 +1-869</option>
-                            <option value="1758">🇱🇨 +1-758</option>
-                            <option value="508">🇵🇲 +508</option>
-                            <option value="1784">🇻🇨 +1-784</option>
-                            <option value="685">🇼🇸 +685</option>
-                            <option value="378">🇸🇲 +378</option>
-                            <option value="239">🇸🇹 +239</option>
-                            <option value="966">🇸🇦 +966</option>
-                            <option value="221">🇸🇳 +221</option>
-                            <option value="381">🇷🇸 +381</option>
-                            <option value="248">🇸🇨 +248</option>
-                            <option value="232">🇸🇱 +232</option>
-                            <option value="65">🇸🇬 +65</option>
-                            <option value="421">🇸🇰 +421</option>
-                            <option value="386">🇸🇮 +386</option>
-                            <option value="677">🇸🇧 +677</option>
-                            <option value="252">🇸🇴 +252</option>
-                            <option value="27">🇿🇦 +27</option>
-                            <option value="34">🇪🇸 +34</option>
-                            <option value="249">🇸🇩 +249</option>
-                            <option value="597">🇸🇷 +597</option>
-                            <option value="268">🇸🇿 +268</option>
-                            <option value="46">🇸🇪 +46</option>
-                            <option value="41">🇨🇭 +41</option>
-                            <option value="963">🇸🇾 +963</option>
-                            <option value="886">🇹🇼 +886</option>
-                            <option value="992">🇹🇯 +992</option>
-                            <option value="255">🇹🇿 +255</option>
-                            <option value="66">🇹🇭 +66</option>
-                            <option value="228">🇹🇬 +228</option>
-                            <option value="690">🇹🇰 +690</option>
-                            <option value="676">🇹🇴 +676</option>
-                            <option value="1868">🇹🇹 +1-868</option>
-                            <option value="216">🇹🇳 +216</option>
-                            <option value="90">🇹🇷 +90</option>
-                            <option value="993">🇹🇲 +993</option>
-                            <option value="1649">🇹🇨 +1-649</option>
-                            <option value="688">🇹🇻 +688</option>
-                            <option value="256">🇺🇬 +256</option>
-                            <option value="380">🇺🇦 +380</option>
-                            <option value="971">🇦🇪 +971</option>
-                            <option value="44">🇬🇧 +44</option>
-                            <option value="1">🇺🇸 +1</option>
-                            <option value="598">🇺🇾 +598</option>
-                            <option value="998">🇺🇿 +998</option>
-                            <option value="678">🇻🇺 +678</option>
-                            <option value="58">🇻🇪 +58</option>
-                            <option value="84">🇻🇳 +84</option>
-                            <option value="1284">🇻🇬 +1-284</option>
-                            <option value="1340">🇻🇮 +1-340</option>
-                            <option value="681">🇼🇫 +681</option>
-                            <option value="967">🇾🇪 +967</option>
-                            <option value="260">🇿🇲 +260</option>
-                            <option value="263">🇿🇼 +263</option>
-                        </select>
-                        <input id="number" type="tel" placeholder="7XXXXXXXX">
-        </div>
-        <button id="submit" class="main-btn">GENERATE CODE</button>
-    </div>
-
-    <div id="qrUI" style="display: none;">
-        <h2 class="ui-title">QR SCANNER</h2>
-        <div class="qr-box">
-            <img id="qrImage" src="" alt="QR Code" style="display: none;">
-            <div class="qr-scan-line"></div>
-        </div>
-        <p style="font-size: 10px; color: #888; margin-top: 10px;">SCAN THIS QR TO LINK DEVICE</p>
-    </div>
-
-    <div id="pair" class="big-box-animation">READY...</div>
-    
-
-                <div class="actions">
-                    <button id="joinBtn">JOIN COMMUNITY</button>
-                    <button id="clearBtn">RESET</button>
-                </div>
+        <div id="otp-area" class="hidden">
+            <p style="margin-bottom: 10px; color: var(--primary);">AUTHENTICATION REQUIRED</p>
+            <div class="phone-input-wrapper">
+                <input type="text" id="otp-input" placeholder="Enter OTP" maxlength="6" style="text-align:center; letter-spacing:8px;">
             </div>
         </div>
 
-    </main>
-
-
-
-<div class="system-dashboard">
-    <div class="monitor-header">
-        <span class="pulse-icon"></span>
-        <span class="header-text">SYSTEM ANALYTICS</span>
+        <button id="main-action-btn" onclick="requestOtp()">Initialize Verification</button>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="card-icon"><i class="fas fa-bolt"></i></div>
-            <div class="card-data">
-                <span class="label">POWER</span>
-                <span class="value" id="bat-val">--%</span>
+    <!-- SETTINGS CARD -->
+    <div class="card hidden" id="settings-card" style="animation: fadeIn 0.5s ease;">
+        <h2>Dashboard</h2>
+        <p id="display-number" style="color: var(--primary); font-weight: bold;"></p>
+
+        <div style="max-height: 55vh; overflow-y: auto; padding-right: 8px; margin-top: 10px;">
+            <h3>General Mode</h3>
+            <div class="setting-box">
+                <span class="label-text">Work Type</span>
+                <select id="WORK_TYPE">
+                    <option value="public">Public Mode</option>
+                    <option value="private">Private Mode</option>
+                    <option value="groups">Groups Only</option>
+                    <option value="inbox">Inbox (DMs) Only</option>
+                </select>
             </div>
-            <div class="mini-bar-bg"><div id="bat-fill" class="mini-bar-fill"></div></div>
-        </div>
-
-        <div class="stat-card">
-            <div class="card-icon"><i class="fas fa-memory"></i></div>
-            <div class="card-data">
-                <span class="label">MEMORY</span>
-                <span class="value" id="ram-val">-- MB</span>
+            <div class="setting-box">
+                <span class="label-text">Movie Mode</span>
+                <select id="MOVIE_MODE">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
             </div>
-            <div class="mini-bar-bg"><div id="ram-fill" class="mini-bar-fill"></div></div>
-        </div>
 
-        <div class="stat-card wide">
-            <div class="card-icon"><i class="fas fa-clock"></i></div>
-            <div class="card-data">
-                <span class="label">SESSION RUNTIME</span>
-                <span class="value monospace" id="runtime-clock">00:00:00</span>
+            <h3>Translation</h3>
+            <div class="toggle-row">
+                <span>Auto Translate</span>
+                <label class="switch">
+                    <input type="checkbox" id="AUTO_TRANSLATE">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-box">
+                <span class="label-text">Target Language</span>
+                <select id="TRANSLATE_LANG">
+                    <optgroup label="Popular">
+                        <option value="si">Sinhala (Sri Lanka)</option>
+                        <option value="en">English</option>
+                        <option value="ta">Tamil</option>
+                        <option value="hi">Hindi</option>
+                    </optgroup>
+                    <optgroup label="All Languages">
+                        <option value="af">Afrikaans</option>
+                        <option value="ar">Arabic</option>
+                        <option value="bn">Bengali</option>
+                        <option value="zh">Chinese</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ru">Russian</option>
+                        <option value="es">Spanish</option>
+                        <!-- Other languages preserved in logic -->
+                    </select>
+            </div>
+
+            <h3>Security</h3>
+            <div class="toggle-row">
+                <span>Anti-Delete</span>
+                <label class="switch">
+                    <input type="checkbox" id="ANTI_DELETE">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-box">
+                <span class="label-text">Anti-Delete Mode</span>
+                <select id="ANTI_DELETE_MODE">
+                    <option value="dm">Send to DM</option>
+                    <option value="chat">Stay in Group</option>
+                </select>
+            </div>
+
+            <h3>Security & Filters</h3>
+            <div class="toggle-row"><span>Anti-Bad</span><label class="switch"><input type="checkbox" id="ANTI_BAD"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Bad No Block</span><label class="switch"><input type="checkbox" id="BAD_NO_BLOCK"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Link</span><label class="switch"><input type="checkbox" id="ANTI_LINK"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Bot</span><label class="switch"><input type="checkbox" id="ANTI_BOT"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Anti-Call</span><label class="switch"><input type="checkbox" id="ANTI_CALL"><span class="slider"></span></label></div>
+
+            <h3>News & Social</h3>
+            <div class="toggle-row"><span>Auto News</span><label class="switch"><input type="checkbox" id="AUTO_NEWS"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto TikTok DL</span><label class="switch"><input type="checkbox" id="AUTO_TIKTOK"><span class="slider"></span></label></div>
+
+            <h3>Automation</h3>
+            <div class="toggle-row"><span>Auto React</span><label class="switch"><input type="checkbox" id="AUTO_REACT"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto View Status</span><label class="switch"><input type="checkbox" id="AUTO_VIEW_STATUS"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Like Status</span><label class="switch"><input type="checkbox" id="AUTO_LIKE_STATUS"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto AI Chat</span><label class="switch"><input type="checkbox" id="AI_CHAT"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Voice</span><label class="switch"><input type="checkbox" id="AUTO_VOICE"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Sticker</span><label class="switch"><input type="checkbox" id="AUTO_STICKER"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Reply</span><label class="switch"><input type="checkbox" id="AUTO_REPLY"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Read Command</span><label class="switch"><input type="checkbox" id="READ_COMMAND"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Typing</span><label class="switch"><input type="checkbox" id="AUTO_TYPING"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Auto Recording</span><label class="switch"><input type="checkbox" id="AUTO_RECORDING"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Always Online</span><label class="switch"><input type="checkbox" id="ALWAYS_ONLINE"><span class="slider"></span></label></div>
+            <div class="toggle-row"><span>Welcome/Goodbye</span><label class="switch"><input type="checkbox" id="WELCOME_GOODBYE"><span class="slider"></span></label></div>
+
+            <div class="setting-box">
+                <span class="label-text">Auto Reply Mode</span>
+                <select id="AUTO_REPLY_MODE">
+                    <option value="default">Default</option>
+                    <option value="group">Group Only</option>
+                    <option value="pm">PM Only</option>
+                </select>
             </div>
         </div>
-    </div>
-</div>
 
-
-
-    
-
-<div class="bot-info-container">
-    <div class="bot-info-card">
-        <h3><i class="fab fa-whatsapp"></i> VAJIRA MD</h3>
-        <p>A powerful, multi-device WhatsApp bot built with the Baileys library. Features automated scrapers, news alerts, and premium token systems.</p>
-        <div class="bot-stats">
-            <span><i class="fas fa-check-circle"></i> V2.0.0</span>
-            <span><i class="fas fa-bolt"></i> FAST</span>
-        </div>
+        <button onclick="save()">Apply All Changes</button>
+        <button class="btn-lock" onclick="location.reload()">Terminate Session</button>
     </div>
 
-    <div class="bot-info-card">
-        <h3><i class="fab fa-whatsapp"></i> VAJIRA MD LITE</h3>
-        <div class="lite-tag">LIGHTWEIGHT</div>
-        <p>Optimized for low-resource hosting like Heroku. Provides essential messaging automation without high RAM usage.</p>
-        <div class="bot-stats">
-            <span><i class="fas fa-check-circle"></i> V1.0.5</span>
-            <span><i class="fas fa-leaf"></i> LITE</span>
-        </div>
-    </div>
-</div>
-    
+    <script>
+        let sessionNumber = "";
 
-    <footer>
-        <div class="footer-links">
-            <a href="https://github.com/webscrape2003"><i class="fab fa-github"></i> GITHUB</a>
-            <a href="https://whatsapp.com/channel/0029VbAq2NSKbYMFRqAbWH1d"><i class="fab fa-whatsapp"></i> GROUP</a>
-        </div>
-        <p>&copy; 2026 VAJIRA MD LITE. All Rights Reserved.</p>
-        <p style="margin-top: 5px; font-size: 10px; color: #444; letter-spacing: 2px;">POWERED BY VajiraOfficial</p>
-    </footer>
+        async function requestOtp() {
+            sessionNumber = document.getElementById('token-input').value;
+            if (!sessionNumber) return alert("Please enter your registered number.");
 
+            try {
+                const response = await fetch('/api/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: sessionNumber })
+                });
 
-<a href="setting.html" class="floating-settings">
-    <i class="fas fa-cog"></i>
-    <span class="settings-label">USER SETTINGS</span>
-</a>
-
-    
-<a href="https://wa.me/94719199757" class="floating-chat" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-    <span class="chat-tooltip">CHAT WITH US</span>
-</a>
-
-    
-<script>
-    // --- PARTICLES ---
-    const container = document.getElementById("particles");
-    for (let i = 0; i < 45; i++) {
-        let s = document.createElement("span");
-        s.style.left = Math.random() * 100 + "vw";
-        s.style.animationDuration = (3 + Math.random() * 5) + "s";
-        s.style.opacity = Math.random();
-        container.appendChild(s);
-    }
-
-    const pairResult = document.getElementById("pair");
-    const numInput = document.getElementById("number");
-    const countryCode = document.getElementById("cc");
-    const pairBtn = document.getElementById("showPair");
-    const qrBtn = document.getElementById("showQR");
-    const pairUI = document.getElementById("pairUI");
-    const qrUI = document.getElementById("qrUI");
-    const qrImage = document.getElementById("qrImage");
-
-    pairBtn.onclick = () => {
-        pairBtn.classList.add("active");
-        qrBtn.classList.remove("active");
-        pairUI.style.display = "block";
-        qrUI.style.display = "none";
-        pairResult.style.display = "flex";
-    };
-
-    qrBtn.onclick = async () => {
-        qrBtn.classList.add("active");
-        pairBtn.classList.remove("active");
-        pairUI.style.display = "none";
-        qrUI.style.display = "block";
-        pairResult.style.display = "none";
-
-        const qrImg = document.getElementById("qrImage");
-        qrImg.src = "https://i.gifer.com/ZZ5H.gif"; 
-
-        try {
-            let res = await fetch('/qr'); 
-            let data = await res.json();
-            if (data.qr) {
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}`;
-                qrImg.src = qrUrl;
-                qrImg.style.display = "block"; 
-            } else {
-                qrImg.src = "https://cdn-icons-png.flaticon.com/512/564/564619.png"; 
-            }
-        } catch (e) {
-            qrImg.src = "https://cdn-icons-png.flaticon.com/512/595/595067.png";
-        }
-    }; 
-
-    document.getElementById("submit").onclick = async () => {
-        if (!numInput.value || numInput.value.length < 8) {
-            pairResult.innerHTML = "<span style='color:#ffa500'>Invalid Number</span>";
-            return;
-        }
-
-        const fullNumber = countryCode.value + numInput.value;
-        pairResult.classList.remove("reveal-code");
-        pairResult.innerHTML = '<i class="fas fa-sync fa-spin"></i> &nbsp; SYSTEM LINKING...';
-
-        try {
-            let res = await fetch(`/code?number=${fullNumber}`);
-            let data = await res.json();
-            
-            setTimeout(() => {
-                if (data.code) {
-                    pairResult.classList.add("reveal-code");
-                    pairResult.innerHTML = `
-                        <span id="finalCode" style="color:#ff0000; letter-spacing:4px; font-weight:bold; font-size:28px;">${data.code}</span>
-                        <button class="copy-btn" onclick="copyCode()">
-                            <i class="fas fa-copy"></i> COPY
-                        </button>
-                    `;
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('otp-area').classList.remove('hidden');
+                    const btn = document.getElementById('main-action-btn');
+                    btn.innerText = "Authorize Access";
+                    btn.onclick = unlock; 
+                    alert("✅ Crimson Key sent to WhatsApp!");
                 } else {
-                    pairResult.innerHTML = "<span style='color:#ff4444'>FAIL: RETRY</span>";
+                    alert(data.message);
                 }
-            }, 1200);
-        } catch {
-            pairResult.innerHTML = "<span style='color:#ff4444'>SERVER OFFLINE</span>";
+            } catch (e) {
+                alert("Interface connection error.");
+            }
         }
-    };
 
-    function copyCode() {
-        const codeText = document.getElementById("finalCode").innerText;
-        navigator.clipboard.writeText(codeText).then(() => {
-            const btn = document.querySelector(".copy-btn");
-            btn.innerHTML = "COPIED";
-            btn.style.background = "#00ff00";
-            btn.style.color = "#000";
-            setTimeout(() => { 
-                btn.innerHTML = '<i class="fas fa-copy"></i> COPY'; 
-                btn.style.background = "#ff0000";
-                btn.style.color = "#fff";
-            }, 2000);
-        });
-    }
+        async function unlock() {
+            const otpCode = document.getElementById('otp-input').value;
+            if (!otpCode) return alert("Please enter the authorization code.");
 
-    document.getElementById("clearBtn").onclick = () => {
-        numInput.value = "";
-        pairResult.classList.remove("reveal-code");
-        pairResult.innerHTML = "READY...";
-    };
+            try {
+                const response = await fetch('/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: sessionNumber, otp: otpCode })
+                });
 
-    document.getElementById("joinBtn").onclick = () => {
-        window.open("https://chat.whatsapp.com/LiYkpszebeIAemKDvQ5yMO", "_blank");
-    };
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('unlock-card').classList.add('hidden');
+                    document.getElementById('settings-card').classList.remove('hidden');
+                    document.getElementById('display-number').innerText = "LINKED: +" + sessionNumber;
 
-    const windBox = document.getElementById("windContainer");
-    function createWind() {
-        if (!windBox) return;
-        const wind = document.createElement("div");
-        wind.classList.add("wind-line");
-        const width = Math.random() * 200 + 100; 
-        const topPos = Math.random() * 100;
-        const duration = Math.random() * 2 + 2;
-        wind.style.width = width + "px";
-        wind.style.top = topPos + "vh";
-        wind.style.left = "-250px"; 
-        wind.style.animationDuration = duration + "s";
-        windBox.appendChild(wind);
-        setTimeout(() => { wind.remove(); }, duration * 1000);
-    }
-    setInterval(createWind, 200);
+                    const s = data.settings;
+                    document.getElementById('WORK_TYPE').value = s.WORK_TYPE || "public";
+                    document.getElementById('MOVIE_MODE').value = s.MOVIE_MODE || "public";
+                    document.getElementById('AUTO_REPLY_MODE').value = s.AUTO_REPLY_MODE || "default";
+                    
+                    document.getElementById('AUTO_VIEW_STATUS').checked = s.AUTO_VIEW_STATUS === "true";
+                    document.getElementById('AUTO_LIKE_STATUS').checked = s.AUTO_LIKE_STATUS === "true";
+                    document.getElementById('AUTO_REPLY').checked = s.AUTO_REPLY === "true";
+                    document.getElementById('AUTO_STICKER').checked = s.AUTO_STICKER === "true";
+                    document.getElementById('ANTI_BAD').checked = s.ANTI_BAD === "true";
+                    document.getElementById('ANTI_LINK').checked = s.ANTI_LINK === "true";
+                    document.getElementById('ANTI_BOT').checked = s.ANTI_BOT === "true";
+                    document.getElementById('READ_COMMAND').checked = s.READ_COMMAND === "true";
+                    document.getElementById('AUTO_RECORDING').checked = s.AUTO_RECORDING === "true";
+                    document.getElementById('AUTO_TYPING').checked = s.AUTO_TYPING === "true";
+                    document.getElementById('BAD_NO_BLOCK').checked = s.BAD_NO_BLOCK === "true";
+                    document.getElementById('AI_CHAT').checked = s.AI_CHAT === "true";
+                    document.getElementById('AUTO_TIKTOK').checked = s.AUTO_TIKTOK === "true";
+                    document.getElementById('AUTO_NEWS').checked = s.AUTO_NEWS === "true";
+                    document.getElementById('AUTO_REACT').checked = s.AUTO_REACT === "true";
+                    document.getElementById('WELCOME_GOODBYE').checked = s.WELCOME_GOODBYE === "true";
+                    
+                    document.getElementById('AUTO_VOICE').checked = s.AUTO_VOICE === "on";
+                    document.getElementById('ANTI_CALL').checked = s.ANTI_CALL === "on";
+                    document.getElementById('ANTI_DELETE').checked = s.ANTI_DELETE === "true" || s.ANTI_DELETE === "on";
+                    document.getElementById('ANTI_DELETE_MODE').value = s.ANTI_DELETE_MODE || "dm";
+                    document.getElementById('AUTO_TRANSLATE').checked = s.AUTO_TRANSLATE === "true";
+                    document.getElementById('TRANSLATE_LANG').value = s.TRANSLATE_LANG || "si";
+                    document.getElementById('ALWAYS_ONLINE').checked = s.ALWAYS_ONLINE === "true";
 
-    function toggleSidebar() {
-        document.getElementById("sidebar").classList.toggle("active");
-        document.getElementById("sidebarOverlay").classList.toggle("active");
-    }
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert("Authorization failed.");
+            }
+        }
 
-    function toggleUserInfo() {
-        alert("USER INFO: \nStatus: Premium Developer \nProject: Vajira MD \nRole: System Admin");
-    }
+        async function save() {
+            const newSettings = {
+                WORK_TYPE: document.getElementById('WORK_TYPE').value,
+                MOVIE_MODE: document.getElementById('MOVIE_MODE').value,
+                AUTO_REPLY_MODE: document.getElementById('AUTO_REPLY_MODE').value,
+                AUTO_VIEW_STATUS: document.getElementById('AUTO_VIEW_STATUS').checked ? "true" : "false",
+                AUTO_LIKE_STATUS: document.getElementById('AUTO_LIKE_STATUS').checked ? "true" : "false",
+                AUTO_REPLY: document.getElementById('AUTO_REPLY').checked ? "true" : "false",
+                AUTO_STICKER: document.getElementById('AUTO_STICKER').checked ? "true" : "false",
+                ANTI_BAD: document.getElementById('ANTI_BAD').checked ? "true" : "false",
+                ANTI_LINK: document.getElementById('ANTI_LINK').checked ? "true" : "false",
+                ANTI_BOT: document.getElementById('ANTI_BOT').checked ? "true" : "false",
+                READ_COMMAND: document.getElementById('READ_COMMAND').checked ? "true" : "false",
+                AUTO_RECORDING: document.getElementById('AUTO_RECORDING').checked ? "true" : "false",
+                AUTO_TYPING: document.getElementById('AUTO_TYPING').checked ? "true" : "false",
+                BAD_NO_BLOCK: document.getElementById('BAD_NO_BLOCK').checked ? "true" : "false",
+                AI_CHAT: document.getElementById('AI_CHAT').checked ? "true" : "false",
+                AUTO_TIKTOK: document.getElementById('AUTO_TIKTOK').checked ? "true" : "false",
+                AUTO_NEWS: document.getElementById('AUTO_NEWS').checked ? "true" : "false",
+                AUTO_REACT: document.getElementById('AUTO_REACT').checked ? "true" : "false",
+                WELCOME_GOODBYE: document.getElementById('WELCOME_GOODBYE').checked ? "true" : "false",
+                AUTO_VOICE: document.getElementById('AUTO_VOICE').checked ? "on" : "off",
+                ANTI_CALL: document.getElementById('ANTI_CALL').checked ? "on" : "off",
+                ANTI_DELETE: document.getElementById('ANTI_DELETE').checked ? "true" : "false",
+                ANTI_DELETE_MODE: document.getElementById('ANTI_DELETE_MODE').value,
+                AUTO_TRANSLATE: document.getElementById('AUTO_TRANSLATE').checked ? "true" : "false",
+                TRANSLATE_LANG: document.getElementById('TRANSLATE_LANG').value,
+                ALWAYS_ONLINE: document.getElementById('ALWAYS_ONLINE').checked ? "true" : "false"
+            };
 
+            try {
+                const response = await fetch('/api/update-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: sessionNumber, newSettings })
+                });
 
-
-// Runtime Logic
-let startTime = Date.now();
-function updateDashboard() {
-    // 1. Runtime
-    const diff = Date.now() - startTime;
-    const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-    const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-    const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-    document.getElementById('runtime-clock').innerText = `${h}:${m}:${s}`;
-
-    // 2. RAM (Chrome/Edge Only)
-    if (performance.memory) {
-        const used = Math.round(performance.memory.usedJSHeapSize / 1048576);
-        const total = Math.round(performance.memory.jsHeapSizeLimit / 1048576);
-        const pct = (performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit) * 100;
-        document.getElementById('ram-val').innerText = `${used}MB`;
-        document.getElementById('ram-fill').style.width = pct + '%';
-    }
-}
-
-// 3. Battery Logic
-if ('getBattery' in navigator) {
-    navigator.getBattery().then(battery => {
-        const sync = () => {
-            const level = Math.round(battery.level * 100);
-            document.getElementById('bat-val').innerText = level + '%';
-            document.getElementById('bat-fill').style.width = level + '%';
-        };
-        sync();
-        battery.onlevelchange = sync;
-        battery.onchargingchange = sync;
-    });
-}
-
-setInterval(updateDashboard, 1000);
-
-
-    
-
-</script>
-
-
+                const data = await response.json();
+                alert(data.success ? "✅ Crimson Database Updated!" : "❌ Update Rejected.");
+            } catch (e) {
+                alert("Communication failure.");
+            }
+        }
+    </script>
 </body>
 </html>
