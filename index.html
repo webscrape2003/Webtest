@@ -3,461 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bot Manager Pro | Crimson Edition</title>
+    <title>Privacy Policy | WhatsApp Bot</title>
     <style>
+        /* --- CSS STYLES --- */
         :root {
-            --primary: #ff0000; /* Blood Red */
-            --primary-glow: rgba(255, 0, 0, 0.4);
-            --accent: #8b0000; /* Darker Red */
-            --bg-dark: #0a0a0a;
-            --card-bg: rgba(30, 10, 10, 0.9);
-            --text-main: #f5f5f5;
-            --text-dim: #b0a4a4;
-            --input-bg: #251a1a;
-            --card-border: rgba(255, 0, 0, 0.2);
+            --blood-red: #8b0000;
+            --neon-red: #ff3131;
+            --dark-bg: #050000;
+            --glass: rgba(20, 0, 0, 0.7);
         }
 
-        /* Float Animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: radial-gradient(circle at center, #200505 0%, #0a0a0a 100%);
-            color: var(--text-main);
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #eeeeee;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        .card { 
-            background: var(--card-bg);
-            padding: 40px 30px;
-            border-radius: 28px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px var(--primary-glow);
+        /* Animated Blood Glow Background */
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 420px;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, #4a0000 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #610000 0%, transparent 40%);
+            z-index: -1;
+            animation: moveGlow 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes moveGlow {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        /* Main Container */
+        .policy-card {
+            width: 90%;
+            max-width: 550px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(139, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--neon-red);
+            font-size: 2rem;
             text-align: center;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.6s ease-out, float 6s ease-in-out infinite;
-        }
-
-        .hidden { display: none; }
-        
-        h2 { 
-            font-size: 28px; 
-            margin-bottom: 8px; 
-            color: var(--primary); 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        h3 { 
-            font-size: 14px; 
-            color: var(--primary); 
-            margin: 25px 0 15px 0; 
-            text-align: left; 
             text-transform: uppercase;
-            border-left: 3px solid var(--primary);
-            padding-left: 10px;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 49, 49, 0.4);
         }
 
-        p { font-size: 14px; color: var(--text-dim); margin-bottom: 25px; }
-
-        /* Input Styles */
-        .phone-input-wrapper {
-            display: flex;
-            align-items: center;
-            background: var(--input-bg);
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 0, 0, 0.1);
-            transition: 0.3s;
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
         }
 
-        .phone-input-wrapper:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        input[type="text"], select {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 15px;
-            width: 100%;
-            outline: none;
-        }
-
-        /* Styled Dropdowns */
-        select {
-            background-color: var(--input-bg) !important;
-            color: var(--text-main) !important;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            appearance: none;
-            border: 1px solid rgba(255, 0, 0, 0.2) !important;
-        }
-
-        select option {
-            background-color: #1a0505;
-            color: white;
-        }
-
-        .setting-box {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 12px 15px;
-            margin-bottom: 15px;
+        /* Content Area */
+        .content {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 30px;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 0, 0, 0.1);
         }
 
-        .label-text { 
-            font-size: 10px; 
-            color: var(--primary); 
-            display: block; 
-            margin-bottom: 6px; 
-            font-weight: bold;
-            text-transform: uppercase; 
+        .content::-webkit-scrollbar {
+            width: 4px;
         }
 
-        /* Switches */
-        .toggle-row {
+        .content::-webkit-scrollbar-thumb {
+            background: var(--blood-red);
+            border-radius: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: var(--neon-red);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 12px 5px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333; transition: .3s; border-radius: 20px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 16px; width: 16px;
-            left: 3px; bottom: 3px; background-color: #777; transition: .3s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(22px); background-color: white; }
-
-        /* Buttons */
-        button {
-            width: 100%; padding: 16px; 
-            background: linear-gradient(45deg, #8b0000, #ff0000);
-            border: none; color: white; font-weight: 800; font-size: 15px;
-            border-radius: 12px; cursor: pointer; margin-top: 15px; 
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        .section p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #bbb;
         }
 
-        button:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--primary-glow);
-            filter: brightness(1.2);
+        /* Footer & Button */
+        .actions {
+            display: flex;
+            justify-content: center;
         }
 
-        .btn-lock { 
-            background: transparent; 
-            color: var(--text-dim); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            font-size: 12px; 
-            margin-top: 15px; 
-            box-shadow: none;
-        }
-
-        .btn-lock:hover {
-            color: var(--primary);
-            border-color: var(--primary);
+        .btn-accept {
             background: transparent;
+            color: var(--neon-red);
+            border: 2px solid var(--neon-red);
+            padding: 12px 40px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255, 49, 49, 0.2);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        .btn-accept:hover {
+            background: var(--neon-red);
+            color: #fff;
+            box-shadow: 0 0 25px var(--neon-red);
+            transform: translateY(-2px);
+        }
+
+        .btn-accept:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
 
-    <!-- UNLOCK CARD -->
-    <div class="card" id="unlock-card">
-        <h2>Crimson Core</h2>
-        <p>Access the control interface by providing your linked number.</p>
-        
-        <div class="phone-input-wrapper">
-            <span style="color:var(--primary); font-weight:bold; margin-right:10px;">+</span>
-            <input type="text" id="token-input" placeholder="947XXXXXXXXX">
-        </div>
+    <div class="bg-glow"></div>
 
-        <div id="otp-area" class="hidden">
-            <p style="margin-bottom: 10px; color: var(--primary);">AUTHENTICATION REQUIRED</p>
-            <div class="phone-input-wrapper">
-                <input type="text" id="otp-input" placeholder="Enter OTP" maxlength="6" style="text-align:center; letter-spacing:8px;">
+    <div class="policy-card">
+        <h1>Privacy Policy</h1>
+        <p class="subtitle">Official WhatsApp Bot System</p>
+
+        <div class="content">
+            <div class="section">
+                <h2>01. Data Collection</h2>
+                <p>Our bot collects your WhatsApp phone number and profile name to provide personalized responses. We do not access your personal contacts or private media files.</p>
+            </div>
+
+            <div class="section">
+                <h2>02. Security Protocols</h2>
+                <p>All data is processed through encrypted end-to-end channels. Your information is stored temporarily and wiped periodically to ensure maximum security.</p>
+            </div>
+
+            <div class="section">
+                <h2>03. Third Party Policy</h2>
+                <p>We do not sell, trade, or otherwise transfer your identifiable information to outside parties. All interactions stay within the bot environment.</p>
+            </div>
+
+            <div class="section">
+                <h2>04. User Consent</h2>
+                <p>By interacting with this bot, you agree to the terms listed here. You can opt-out at any time by blocking the bot or typing /stop.</p>
             </div>
         </div>
 
-        <button id="main-action-btn" onclick="requestOtp()">Initialize Verification</button>
-    </div>
-
-    <!-- SETTINGS CARD -->
-    <div class="card hidden" id="settings-card" style="animation: fadeIn 0.5s ease;">
-        <h2>Dashboard</h2>
-        <p id="display-number" style="color: var(--primary); font-weight: bold;"></p>
-
-        <div style="max-height: 55vh; overflow-y: auto; padding-right: 8px; margin-top: 10px;">
-            <h3>General Mode</h3>
-            <div class="setting-box">
-                <span class="label-text">Work Type</span>
-                <select id="WORK_TYPE">
-                    <option value="public">Public Mode</option>
-                    <option value="private">Private Mode</option>
-                    <option value="groups">Groups Only</option>
-                    <option value="inbox">Inbox (DMs) Only</option>
-                </select>
-            </div>
-            <div class="setting-box">
-                <span class="label-text">Movie Mode</span>
-                <select id="MOVIE_MODE">
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                </select>
-            </div>
-
-            <h3>Translation</h3>
-            <div class="toggle-row">
-                <span>Auto Translate</span>
-                <label class="switch">
-                    <input type="checkbox" id="AUTO_TRANSLATE">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="setting-box">
-                <span class="label-text">Target Language</span>
-                <select id="TRANSLATE_LANG">
-                    <optgroup label="Popular">
-                        <option value="si">Sinhala (Sri Lanka)</option>
-                        <option value="en">English</option>
-                        <option value="ta">Tamil</option>
-                        <option value="hi">Hindi</option>
-                    </optgroup>
-                    <optgroup label="All Languages">
-                        <option value="af">Afrikaans</option>
-                        <option value="ar">Arabic</option>
-                        <option value="bn">Bengali</option>
-                        <option value="zh">Chinese</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                        <option value="it">Italian</option>
-                        <option value="ja">Japanese</option>
-                        <option value="ru">Russian</option>
-                        <option value="es">Spanish</option>
-                        <!-- Other languages preserved in logic -->
-                    </select>
-            </div>
-
-            <h3>Security</h3>
-            <div class="toggle-row">
-                <span>Anti-Delete</span>
-                <label class="switch">
-                    <input type="checkbox" id="ANTI_DELETE">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="setting-box">
-                <span class="label-text">Anti-Delete Mode</span>
-                <select id="ANTI_DELETE_MODE">
-                    <option value="dm">Send to DM</option>
-                    <option value="chat">Stay in Group</option>
-                </select>
-            </div>
-
-            <h3>Security & Filters</h3>
-            <div class="toggle-row"><span>Anti-Bad</span><label class="switch"><input type="checkbox" id="ANTI_BAD"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Bad No Block</span><label class="switch"><input type="checkbox" id="BAD_NO_BLOCK"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Anti-Link</span><label class="switch"><input type="checkbox" id="ANTI_LINK"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Anti-Bot</span><label class="switch"><input type="checkbox" id="ANTI_BOT"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Anti-Call</span><label class="switch"><input type="checkbox" id="ANTI_CALL"><span class="slider"></span></label></div>
-
-            <h3>News & Social</h3>
-            <div class="toggle-row"><span>Auto News</span><label class="switch"><input type="checkbox" id="AUTO_NEWS"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto TikTok DL</span><label class="switch"><input type="checkbox" id="AUTO_TIKTOK"><span class="slider"></span></label></div>
-
-            <h3>Automation</h3>
-            <div class="toggle-row"><span>Auto React</span><label class="switch"><input type="checkbox" id="AUTO_REACT"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto View Status</span><label class="switch"><input type="checkbox" id="AUTO_VIEW_STATUS"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto Like Status</span><label class="switch"><input type="checkbox" id="AUTO_LIKE_STATUS"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto AI Chat</span><label class="switch"><input type="checkbox" id="AI_CHAT"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto Voice</span><label class="switch"><input type="checkbox" id="AUTO_VOICE"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto Sticker</span><label class="switch"><input type="checkbox" id="AUTO_STICKER"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto Reply</span><label class="switch"><input type="checkbox" id="AUTO_REPLY"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Read Command</span><label class="switch"><input type="checkbox" id="READ_COMMAND"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto Typing</span><label class="switch"><input type="checkbox" id="AUTO_TYPING"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Auto Recording</span><label class="switch"><input type="checkbox" id="AUTO_RECORDING"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Always Online</span><label class="switch"><input type="checkbox" id="ALWAYS_ONLINE"><span class="slider"></span></label></div>
-            <div class="toggle-row"><span>Welcome/Goodbye</span><label class="switch"><input type="checkbox" id="WELCOME_GOODBYE"><span class="slider"></span></label></div>
-
-            <div class="setting-box">
-                <span class="label-text">Auto Reply Mode</span>
-                <select id="AUTO_REPLY_MODE">
-                    <option value="default">Default</option>
-                    <option value="group">Group Only</option>
-                    <option value="pm">PM Only</option>
-                </select>
-            </div>
+        <div class="actions">
+            <button class="btn-accept" id="btn">I Agree & Continue</button>
         </div>
-
-        <button onclick="save()">Apply All Changes</button>
-        <button class="btn-lock" onclick="location.reload()">Terminate Session</button>
     </div>
 
     <script>
-        let sessionNumber = "";
-
-        async function requestOtp() {
-            sessionNumber = document.getElementById('token-input').value;
-            if (!sessionNumber) return alert("Please enter your registered number.");
-
-            try {
-                const response = await fetch('/api/request-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phoneNumber: sessionNumber })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('otp-area').classList.remove('hidden');
-                    const btn = document.getElementById('main-action-btn');
-                    btn.innerText = "Authorize Access";
-                    btn.onclick = unlock; 
-                    alert("✅ Crimson Key sent to WhatsApp!");
-                } else {
-                    alert(data.message);
-                }
-            } catch (e) {
-                alert("Interface connection error.");
-            }
-        }
-
-        async function unlock() {
-            const otpCode = document.getElementById('otp-input').value;
-            if (!otpCode) return alert("Please enter the authorization code.");
-
-            try {
-                const response = await fetch('/api/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phoneNumber: sessionNumber, otp: otpCode })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('unlock-card').classList.add('hidden');
-                    document.getElementById('settings-card').classList.remove('hidden');
-                    document.getElementById('display-number').innerText = "LINKED: +" + sessionNumber;
-
-                    const s = data.settings;
-                    document.getElementById('WORK_TYPE').value = s.WORK_TYPE || "public";
-                    document.getElementById('MOVIE_MODE').value = s.MOVIE_MODE || "public";
-                    document.getElementById('AUTO_REPLY_MODE').value = s.AUTO_REPLY_MODE || "default";
-                    
-                    document.getElementById('AUTO_VIEW_STATUS').checked = s.AUTO_VIEW_STATUS === "true";
-                    document.getElementById('AUTO_LIKE_STATUS').checked = s.AUTO_LIKE_STATUS === "true";
-                    document.getElementById('AUTO_REPLY').checked = s.AUTO_REPLY === "true";
-                    document.getElementById('AUTO_STICKER').checked = s.AUTO_STICKER === "true";
-                    document.getElementById('ANTI_BAD').checked = s.ANTI_BAD === "true";
-                    document.getElementById('ANTI_LINK').checked = s.ANTI_LINK === "true";
-                    document.getElementById('ANTI_BOT').checked = s.ANTI_BOT === "true";
-                    document.getElementById('READ_COMMAND').checked = s.READ_COMMAND === "true";
-                    document.getElementById('AUTO_RECORDING').checked = s.AUTO_RECORDING === "true";
-                    document.getElementById('AUTO_TYPING').checked = s.AUTO_TYPING === "true";
-                    document.getElementById('BAD_NO_BLOCK').checked = s.BAD_NO_BLOCK === "true";
-                    document.getElementById('AI_CHAT').checked = s.AI_CHAT === "true";
-                    document.getElementById('AUTO_TIKTOK').checked = s.AUTO_TIKTOK === "true";
-                    document.getElementById('AUTO_NEWS').checked = s.AUTO_NEWS === "true";
-                    document.getElementById('AUTO_REACT').checked = s.AUTO_REACT === "true";
-                    document.getElementById('WELCOME_GOODBYE').checked = s.WELCOME_GOODBYE === "true";
-                    
-                    document.getElementById('AUTO_VOICE').checked = s.AUTO_VOICE === "on";
-                    document.getElementById('ANTI_CALL').checked = s.ANTI_CALL === "on";
-                    document.getElementById('ANTI_DELETE').checked = s.ANTI_DELETE === "true" || s.ANTI_DELETE === "on";
-                    document.getElementById('ANTI_DELETE_MODE').value = s.ANTI_DELETE_MODE || "dm";
-                    document.getElementById('AUTO_TRANSLATE').checked = s.AUTO_TRANSLATE === "true";
-                    document.getElementById('TRANSLATE_LANG').value = s.TRANSLATE_LANG || "si";
-                    document.getElementById('ALWAYS_ONLINE').checked = s.ALWAYS_ONLINE === "true";
-
-                } else {
-                    alert(data.message);
-                }
-            } catch (e) {
-                alert("Authorization failed.");
-            }
-        }
-
-        async function save() {
-            const newSettings = {
-                WORK_TYPE: document.getElementById('WORK_TYPE').value,
-                MOVIE_MODE: document.getElementById('MOVIE_MODE').value,
-                AUTO_REPLY_MODE: document.getElementById('AUTO_REPLY_MODE').value,
-                AUTO_VIEW_STATUS: document.getElementById('AUTO_VIEW_STATUS').checked ? "true" : "false",
-                AUTO_LIKE_STATUS: document.getElementById('AUTO_LIKE_STATUS').checked ? "true" : "false",
-                AUTO_REPLY: document.getElementById('AUTO_REPLY').checked ? "true" : "false",
-                AUTO_STICKER: document.getElementById('AUTO_STICKER').checked ? "true" : "false",
-                ANTI_BAD: document.getElementById('ANTI_BAD').checked ? "true" : "false",
-                ANTI_LINK: document.getElementById('ANTI_LINK').checked ? "true" : "false",
-                ANTI_BOT: document.getElementById('ANTI_BOT').checked ? "true" : "false",
-                READ_COMMAND: document.getElementById('READ_COMMAND').checked ? "true" : "false",
-                AUTO_RECORDING: document.getElementById('AUTO_RECORDING').checked ? "true" : "false",
-                AUTO_TYPING: document.getElementById('AUTO_TYPING').checked ? "true" : "false",
-                BAD_NO_BLOCK: document.getElementById('BAD_NO_BLOCK').checked ? "true" : "false",
-                AI_CHAT: document.getElementById('AI_CHAT').checked ? "true" : "false",
-                AUTO_TIKTOK: document.getElementById('AUTO_TIKTOK').checked ? "true" : "false",
-                AUTO_NEWS: document.getElementById('AUTO_NEWS').checked ? "true" : "false",
-                AUTO_REACT: document.getElementById('AUTO_REACT').checked ? "true" : "false",
-                WELCOME_GOODBYE: document.getElementById('WELCOME_GOODBYE').checked ? "true" : "false",
-                AUTO_VOICE: document.getElementById('AUTO_VOICE').checked ? "on" : "off",
-                ANTI_CALL: document.getElementById('ANTI_CALL').checked ? "on" : "off",
-                ANTI_DELETE: document.getElementById('ANTI_DELETE').checked ? "true" : "false",
-                ANTI_DELETE_MODE: document.getElementById('ANTI_DELETE_MODE').value,
-                AUTO_TRANSLATE: document.getElementById('AUTO_TRANSLATE').checked ? "true" : "false",
-                TRANSLATE_LANG: document.getElementById('TRANSLATE_LANG').value,
-                ALWAYS_ONLINE: document.getElementById('ALWAYS_ONLINE').checked ? "true" : "false"
-            };
-
-            try {
-                const response = await fetch('/api/update-settings', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: sessionNumber, newSettings })
-                });
-
-                const data = await response.json();
-                alert(data.success ? "✅ Crimson Database Updated!" : "❌ Update Rejected.");
-            } catch (e) {
-                alert("Communication failure.");
-            }
-        }
+        // --- JS INTERACTION ---
+        const button = document.getElementById('btn');
+        
+        button.addEventListener('click', () => {
+            // Add a "blood pulse" effect on click
+            button.style.transform = "scale(0.95)";
+            
+            setTimeout(() => {
+                alert("Policy Accepted. You may now continue using the Bot.");
+                // Replace the alert with your logic, e.g., redirecting back to WhatsApp:
+                // window.location.href = "https://wa.me/yournumber";
+            }, 200);
+        });
     </script>
 </body>
 </html>
